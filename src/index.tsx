@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
 import { ChakraProvider } from '@chakra-ui/react';
 
-function Main () {
+function Main() {
   return (
   <ChakraProvider theme={theme}>
     <HashRouter>
@@ -17,4 +17,4 @@ function Main () {
   )
 }
 
-ReactDOM.render( <Main/>, document.getElementById("root") );
+ReactDOM.render(<Main/>, document.getElementById("root"));
