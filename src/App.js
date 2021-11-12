@@ -1,17 +1,14 @@
 import React from "react";
+import VoiceChat from './components/VoiceChat'
 
+// import { Box } from '@chakra-ui/react';
 import { Route } from "react-router-dom";
 
-const Content = styled.div`
-  overflow: auto;
-  width: calc(100vw - 60px);
-  height: calc(1000vh - 30px);
-`;
-
-function App() {
+export default function App() {
   return (
     <div>
       Here it is
+      <VoiceChat/>
       {/* <TitleBar />
       <div style={{ display: "flex", flexDirection: "row" }}>
         <Sidebar />
@@ -23,5 +20,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
