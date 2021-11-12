@@ -4,15 +4,15 @@ import React from "react"
 import theme from './theme'
 import ReactDOM from "react-dom"
 
-import { HashRouter } from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
 import { ChakraProvider } from '@chakra-ui/react'
 
 function Main() {
   return (
   <ChakraProvider theme={theme}>
-    <HashRouter>
+    <BrowserRouter >
       <App />
-    </HashRouter>
+    </BrowserRouter >
   </ChakraProvider>
   )
 }
