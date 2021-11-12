@@ -1,0 +1,34 @@
+{
+  "name": "foghorn",
+  "version": "0.0.0",
+  "main": "public/electron.js",
+  "repository": "git@github.com:bkenio/foghorn.git",
+  "author": "Brendan Kennedy <brenwken@gmail.com>",
+  "license": "MPL-2.0",
+  "scripts": {
+    "dev": "parcel ./src/public/index.html -d build/",
+    "start-dev": "cross-env ELECTRON_START_URL=http://localhost:1234 electron .",
+    "start": "electron .",
+    "build": "parcel build ./src/public/index.html -d build/ --public-url ./",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --publish never",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
+    "electron": "^15.3.1",
+    "electron-builder": "^22.13.1",
+    "electron-reload": "^2.0.0-alpha.1",
+    "parcel-bundler": "^1.12.5"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.7.0",
+    "axios": "^0.24.0",
+    "cross-env": "^7.0.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.2"
+  }
+}
