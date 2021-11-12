@@ -1,12 +1,12 @@
 import React from "react";
 import VoiceChat from './components/VoiceChat'
 
-// import { Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { Route } from "react-router-dom";
 
 export default function App() {
   return (
-    <div>
+    <Box>
       Here it is
       <VoiceChat/>
       {/* <TitleBar />
@@ -17,6 +17,6 @@ export default function App() {
           <Route exact path="/settings" component={Settings} />
         </Content>
       </div> */}
-    </div>
+    </Box>
   );
 }
