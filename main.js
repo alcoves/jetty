@@ -1,18 +1,18 @@
 // Basic init
-const url = require("url");
-const path = require("path");
-const electron = require("electron");
+const url = require("url")
+const path = require("path")
+const electron = require("electron")
 
-const { autoUpdater } = require("electron-updater");
-const { app, BrowserWindow, dialog, ipcMain } = electron;
+const { autoUpdater } = require("electron-updater")
+const { app, BrowserWindow, dialog, ipcMain } = electron
 
 // Let electron reloads by itself when webpack watches changes in ./app/
 if (process.env.ELECTRON_START_URL) {
-  require("electron-reload")(__dirname);
+  require("electron-reload")(__dirname)
 }
 
 // To avoid being garbage collected
-let mainWindow;
+let mainWindow
 
 app.on("ready", () => {
   let mainWindow = new BrowserWindow({
@@ -21,7 +21,7 @@ app.on("ready", () => {
     // frame: false,
     webPreferences: { nodeIntegration: true },
     icon: path.join(__dirname, "./src/public/logo.png"),
-  });
+  })
 
   const startUrl =
     process.env.ELECTRON_START_URL ||
@@ -29,59 +29,59 @@ app.on("ready", () => {
       pathname: path.join(__dirname, "./build/index.html"),
       protocol: "file:",
       slashes: true,
-    });
+    })
 
-  mainWindow.loadURL(startUrl);
+  mainWindow.loadURL(startUrl)
 
   ipcMain.on("titleBarAction", (event, arg) => {
     if (arg === "maximize") {
       if (mainWindow.isMaximized()) {
-        mainWindow.restore();
+        mainWindow.restore()
       } else {
-        mainWindow.maximize();
+        mainWindow.maximize()
       }
     }
 
-    if (arg === "minimize") mainWindow.minimize();
-    if (arg === "close") app.quit();
-  });
+    if (arg === "minimize") mainWindow.minimize()
+    if (arg === "close") app.quit()
+  })
 
   mainWindow.on("closed", function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    mainWindow = null;
-  });
-});
+    mainWindow = null
+  })
+})
 
 // Quit when all windows are closed.
 app.on("window-all-closed", function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== "darwin") {
-    app.quit();
+    app.quit()
   }
-});
+})
 
 app.on("activate", function () {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
-    createWindow();
+    createWindow()
   }
-});
+})
 
 autoUpdater.on("update-available", () => {
-  console.log("app update availible");
-});
+  console.log("app update availible")
+})
 
 autoUpdater.on("update-downloaded", () => {
-  autoUpdater.quitAndInstall();
-});
+  autoUpdater.quitAndInstall()
+})
 
 ipcMain.on("app_version", (event) => {
-  event.sender.send("app_version", { version: app.getVersion() });
-});
+  event.sender.send("app_version", { version: app.getVersion() })
+})
 
 // const getCommunityPath = () => {
 //   const appPath = app.getAppPath();
