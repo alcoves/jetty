@@ -23,14 +23,7 @@ app.on("ready", () => {
     icon: path.join(__dirname, "./src/public/logo.png"),
   })
 
-  const startUrl =
-    process.env.ELECTRON_START_URL ||
-    url.format({
-      pathname: path.join(__dirname, "./dist/index.html"),
-      protocol: "file:",
-      slashes: true,
-    })
-
+  const startUrl = process.env.ELECTRON_START_URL || `${__dirname}/build/index.html`
   mainWindow.loadURL(startUrl)
 
   ipcMain.on("titleBarAction", (event, arg) => {
