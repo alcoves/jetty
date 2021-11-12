@@ -4,10 +4,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { HashRouter } from "react-router-dom";
+import { ChakraProvider } from '@chakra-ui/react';
 
 ReactDOM.render(
-    <HashRouter>
-      <App />
-    </HashRouter>,
+    <ChakraProvider>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </ChakraProvider>,
   document.getElementById("root")
 );

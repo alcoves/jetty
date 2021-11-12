@@ -1,9 +1,6 @@
 // Basic init
 const url = require("url");
 const path = require("path");
-const axios = require("axios");
-const fs = require("fs-extra");
-const unzipper = require("unzipper");
 const electron = require("electron");
 
 const { autoUpdater } = require("electron-updater");
@@ -21,7 +18,7 @@ app.on("ready", () => {
   let mainWindow = new BrowserWindow({
     width: 1000,
     height: 800,
-    frame: false,
+    // frame: false,
     webPreferences: { nodeIntegration: true },
     icon: path.join(__dirname, "./src/public/logo.png"),
   });
@@ -86,79 +83,79 @@ ipcMain.on("app_version", (event) => {
   event.sender.send("app_version", { version: app.getVersion() });
 });
 
-const getCommunityPath = () => {
-  const appPath = app.getAppPath();
-  const data = fs.readJSONSync(`${appPath}/config.json`);
-  return data.communityDirectory;
-};
+// const getCommunityPath = () => {
+//   const appPath = app.getAppPath();
+//   const data = fs.readJSONSync(`${appPath}/config.json`);
+//   return data.communityDirectory;
+// };
 
-ipcMain.on("installMod", async (event, arg) => {
-  const communityPath = getCommunityPath();
-  const data = JSON.parse(arg);
+// ipcMain.on("installMod", async (event, arg) => {
+//   const communityPath = getCommunityPath();
+//   const data = JSON.parse(arg);
 
-  const zipStoragePath = `${communityPath}/${data.id}.zip`;
-  const unzippedDirPath = `${communityPath}/${data.id}`;
+//   const zipStoragePath = `${communityPath}/${data.id}.zip`;
+//   const unzippedDirPath = `${communityPath}/${data.id}`;
 
-  const writeStream = fs.createWriteStream(zipStoragePath);
+//   const writeStream = fs.createWriteStream(zipStoragePath);
 
-  const response = await axios({
-    method: "GET",
-    responseType: "stream",
-    url: data.versions[0].link,
-  });
+//   const response = await axios({
+//     method: "GET",
+//     responseType: "stream",
+//     url: data.versions[0].link,
+//   });
 
-  event.reply(
-    "installMod",
-    JSON.stringify({ label: "downloading", value: 50 })
-  );
-  response.data.pipe(writeStream);
+//   event.reply(
+//     "installMod",
+//     JSON.stringify({ label: "downloading", value: 50 })
+//   );
+//   response.data.pipe(writeStream);
 
-  writeStream.on("finish", function () {
-    event.reply(
-      "installMod",
-      JSON.stringify({ label: "extracting", value: 75 })
-    );
-    fs.createReadStream(zipStoragePath)
-      .pipe(unzipper.Extract({ path: unzippedDirPath }))
-      .on("finish", function () {
-        fs.removeSync(zipStoragePath);
-        console.log("downloading done: finish");
-        event.reply("installMod", JSON.stringify({ label: "", value: 0 }));
-      });
-  });
+//   writeStream.on("finish", function () {
+//     event.reply(
+//       "installMod",
+//       JSON.stringify({ label: "extracting", value: 75 })
+//     );
+//     fs.createReadStream(zipStoragePath)
+//       .pipe(unzipper.Extract({ path: unzippedDirPath }))
+//       .on("finish", function () {
+//         fs.removeSync(zipStoragePath);
+//         console.log("downloading done: finish");
+//         event.reply("installMod", JSON.stringify({ label: "", value: 0 }));
+//       });
+//   });
 
-  writeStream.on("error", function (err) {
-    console.log(err);
-  });
-});
+//   writeStream.on("error", function (err) {
+//     console.log(err);
+//   });
+// });
 
-ipcMain.on("loadFolder", (event, arg) => {
-  const appPath = app.getAppPath();
-  const data = fs.readJSONSync(`${appPath}/config.json`);
-  event.reply("selectFolder", data.communityDirectory);
-});
+// ipcMain.on("loadFolder", (event, arg) => {
+//   const appPath = app.getAppPath();
+//   const data = fs.readJSONSync(`${appPath}/config.json`);
+//   event.reply("selectFolder", data.communityDirectory);
+// });
 
-ipcMain.on("selectFolder", (event, arg) => {
-  const appPath = app.getAppPath();
-  console.log("appPath", appPath);
+// ipcMain.on("selectFolder", (event, arg) => {
+//   const appPath = app.getAppPath();
+//   console.log("appPath", appPath);
 
-  dialog
-    .showOpenDialog(mainWindow, {
-      title: "Select MSFS2020 Community Folder",
-      defaultPath: "C:\\",
-      buttonLabel: "Select",
-      properties: ["openDirectory"],
-    })
-    .then((result) => {
-      console.log("result", result);
-      if (!result.canceled) {
-        fs.writeJSONSync(`${appPath}/config.json`, {
-          communityDirectory: result.filePaths[0],
-        });
-        event.reply("selectFolder", result.filePaths[0]);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+//   dialog
+//     .showOpenDialog(mainWindow, {
+//       title: "Select MSFS2020 Community Folder",
+//       defaultPath: "C:\\",
+//       buttonLabel: "Select",
+//       properties: ["openDirectory"],
+//     })
+//     .then((result) => {
+//       console.log("result", result);
+//       if (!result.canceled) {
+//         fs.writeJSONSync(`${appPath}/config.json`, {
+//           communityDirectory: result.filePaths[0],
+//         });
+//         event.reply("selectFolder", result.filePaths[0]);
+//       }
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
