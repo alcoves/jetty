@@ -1,15 +1,18 @@
 import React from 'react'
 import { Flex, Box } from '@chakra-ui/react'
 import TitleBar from './TitleBar'
+import Sidebar from './Sidebar'
 
 export default function Layout({ children }) {
   return (
-    <Flex direction='column' w='100vw' h='100vh'>
+    <div>
       <TitleBar/>
-      <Flex  w='100%' h='100%'>
-        <Box bg='gray.900' w='60px'></Box>
-        <Box p='5' bg='gray.800' w='100%'>{children}</Box>
+      <Flex h='100%'>
+        <Sidebar/>
+        <Box overflow='auto' w='100%' h='calc(100vh - 20px)' p='5' bg='gray.800'>
+          {children}
+        </Box>
       </Flex>
-    </Flex>
+    </div>
   )
 }

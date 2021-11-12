@@ -3,13 +3,15 @@ import Layout from './components/Layout'
 import Home from "./components/Home"
 import VideoRoom from './components/VideoRoom'
 import { Route, Routes } from "react-router-dom"
+import Settings from "./components/Settings"
 
 export default function App() {
   return (
     <Layout>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/rooms/:id" element={<VideoRoom/>}/>
+        <Route path="/settings" element={<Settings/>}/>
+        <Route path="/rooms/:roomId" element={<VideoRoom/>}/>
         <Route
           path="*"
           element={
