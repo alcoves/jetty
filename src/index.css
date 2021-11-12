@@ -4,3 +4,13 @@ body {
   color: #c2c2c2;
   overflow: hidden;
 }
+
+video {
+  height: 300px;
+  border-radius: 1rem;
+  width: 400px;
+  object-fit: cover;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+}
