@@ -23,10 +23,11 @@ app.on("ready", () => {
   })
 
   const startUrl = process.env.ELECTRON_START_URL || url.format({
-    pathname: path.join(__dirname, '/build/index.html'),
+    slashes: true,
     protocol: 'file:',
-    slashes: true
-})
+    pathname: path.join(__dirname, 'dist', 'index.html'),
+  })
+
   mainWindow.loadURL(startUrl)
 
   ipcMain.on("titleBarAction", (event, arg) => {
@@ -67,13 +68,15 @@ app.on("activate", function () {
   }
 })
 
-autoUpdater.on("update-available", () => {
-  console.log("app update availible")
-})
+autoUpdater.checkForUpdatesAndNotify()
 
-autoUpdater.on("update-downloaded", () => {
-  autoUpdater.quitAndInstall()
-})
+// autoUpdater.on("update-available", () => {
+//   console.log("app update availible")
+// })
+
+// autoUpdater.on("update-downloaded", () => {
+//   autoUpdater.quitAndInstall()
+// })
 
 // ipcMain.on("app_version", (event) => {
 //   event.sender.send("app_version", { version: app.getVersion() })

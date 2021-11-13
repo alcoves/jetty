@@ -1,6 +1,6 @@
 {
   "name": "foghorn",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "main": "main.js",
   "targets": {
     "main": false
@@ -72,7 +72,7 @@
     "start": "electron .",
     "lint": "eslint . --ext .ts",
     "pack": "electron-builder --dir",
-    "compile": "parcel build ./src/public/index.html --dist-dir build --public-url ./",
+    "compile": "parcel build ./src/public/index.html --dist-dir dist --public-url ./",
     "build": "electron-builder --publish never",
     "release": "electron-builder",
     "postinstall": "electron-builder install-app-deps"
