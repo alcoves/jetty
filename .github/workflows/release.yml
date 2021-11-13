@@ -3,11 +3,13 @@ on:
   push:
     tags:
       - 'v*'
-
 jobs:
-
-  publish_on_linux:
-    runs-on: ubuntu-latest
+  release:
+    runs-on: ${{ matrix.os }}
+    name: Release ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
     - uses: actions/checkout@v2       
     - uses: actions/setup-node@master
@@ -15,34 +17,10 @@ jobs:
         node-version: 16
     - name: install dependencies
       run: yarn install
-    - name: publish
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: yarn run publish
-
-  publish_on_mac:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-      with:
-        node-version: 16
-    - name: install dependencies
-      run: yarn install
-    - name: publish
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: yarn run publish
-      
-  publish_on_win:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2       
-    - uses: actions/setup-node@master
-      with:
-        node-version: 16
-    - name: install dependencies
-      run: yarn install
+    - name: compile
+      run: yarn compile
+    - name: build
+      run: yarn build
     - name: publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
