@@ -6,10 +6,10 @@ import Sidebar from './Sidebar'
 export default function Layout({ children }) {
   return (
     <div>
-      <TitleBar/>
+      <TitleBar />
       <Flex h='100%'>
-        <Sidebar/>
-        <Box overflow='auto' w='100%' h='calc(100vh - 20px)' p='5' bg='gray.800'>
+        <Sidebar />
+        <Box overflow='auto' w='100%' h='calc(100vh - 20px)' bg='gray.800'>
           {children}
         </Box>
       </Flex>

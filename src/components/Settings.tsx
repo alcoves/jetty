@@ -5,17 +5,21 @@ export default function Settings() {
   const [username, setUsername] = useState(localStorage.getItem('username') || '')
 
   return (
-    <Box>
+    <Box p='4'>
       <Heading size='md'>Settings</Heading>
-      <Spacer h='10px'/>
+      <Spacer h='10px' />
       <Box>
-        <Heading size='xs' mb='2'> Username </Heading>
+        <Heading size='xs' mb='2'>
+          {' '}
+          Username{' '}
+        </Heading>
         <Input
+          autoFocus
           size='sm'
           w='300px'
           variant='filled'
           value={username}
-          onChange={(e) => {
+          onChange={e => {
             if (e.target.value.length < 30) {
               setUsername(e.target.value)
               localStorage.setItem('username', e.target.value)
