@@ -1,5 +1,6 @@
 // Basic init
 const path = require("path")
+const url = require('url')
 const electron = require("electron")
 const { autoUpdater } = require("electron-updater")
 const { app, BrowserWindow, dialog, ipcMain } = electron
@@ -21,7 +22,11 @@ app.on("ready", () => {
     icon: path.join(__dirname, "./src/public/logo.png"),
   })
 
-  const startUrl = process.env.ELECTRON_START_URL || `${__dirname}/build/index.html`
+  const startUrl = process.env.ELECTRON_START_URL || url.format({
+    pathname: path.join(__dirname, '/build/index.html'),
+    protocol: 'file:',
+    slashes: true
+})
   mainWindow.loadURL(startUrl)
 
   ipcMain.on("titleBarAction", (event, arg) => {

@@ -2,8 +2,9 @@ import PeerJS from 'peerjs'
 import io from 'socket.io-client'
 import { useNavigate, useParams } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import { Box, Button, SimpleGrid, Text } from '@chakra-ui/react'
 import VideoComponent from './VideoComponent'
+import { IoCamera, IoCameraOutline, IoMicOffOutline, IoMicOutline } from 'react-icons/io5'
+import { IconButton, HStack, Box, Button, SimpleGrid, Text } from '@chakra-ui/react'
 
 let peer
 let socket
@@ -14,6 +15,8 @@ export default function VoiceChat() {
   const { roomId } = useParams()
   const [localStream, setLocalStream] = useState(null)
   const [streams, setStreams] = useState([])
+  const [videoEnabled, setVideoEnabled] = useState(false)
+  const [audioEnabled, setAudioEnabled] = useState(false)
 
   function connectToNewUser(userId, username, stream) {
     console.log(`connecting to user ${username} with id ${userId}`, stream)
@@ -30,23 +33,18 @@ export default function VoiceChat() {
     })
   }
 
-  function hideVideo() {
-    const enabled = localStream.getVideoTracks()[0].enabled
-    if (enabled) {
-      localStream.getVideoTracks()[0].enabled = false
-    } else {
-      localStream.getVideoTracks()[0].enabled = true
+  useEffect(() => {
+    if(localStream) {
+    localStream.getVideoTracks()[0].enabled = videoEnabled
     }
-  }
+  }, [videoEnabled])
 
-  function handleMute() {
-    const enabled = localStream.getAudioTracks()[0].enabled
-    if (enabled) {
-      localStream.getAudioTracks()[0].enabled = false
-    } else {
-      localStream.getAudioTracks()[0].enabled = true
+  useEffect(() => {
+    if(localStream) {
+      localStream.getAudioTracks()[0].enabled = audioEnabled
     }
-  }
+
+  }, [audioEnabled])
 
   useEffect(() => {
     console.log("Room mounted")
@@ -69,6 +67,8 @@ export default function VoiceChat() {
       video: true,
     })
     .then((localStream) => {
+      setVideoEnabled(true)
+      setAudioEnabled(true)
       setLocalStream(localStream)
       console.log("localStream", localStream)
 
@@ -121,11 +121,18 @@ export default function VoiceChat() {
   return (
     <Box>
       <Text>Room ID: {roomId}</Text>
-      <Button onClick={hideVideo}>Toggle Camera</Button>
-      <Button onClick={handleMute}>Mute</Button>
-      <Button onClick={() => peer.disconnect()}> Disconnect </Button>
       {localUser}
       <video id='me' muted/>
+      <HStack mt='2'>
+        <IconButton onClick={() => setVideoEnabled(!videoEnabled)} aria-label='camera-toggle' size='md' variant='ghost'>
+          {videoEnabled ? <IoCamera/> : <IoCameraOutline color='red'/>}
+        </IconButton>
+        <IconButton onClick={() => setAudioEnabled(!audioEnabled)} aria-label='audio-toggle' size='md' variant='ghost'>
+          {audioEnabled ? <IoMicOutline/> : <IoMicOffOutline color='red'/>}
+        </IconButton>
+        <Button onClick={() => peer.disconnect()}> Disconnect </Button>
+      </HStack>
+
       <br></br>
       <SimpleGrid id='video-grid' columns={2} spacing={20} justify='center' align='center'>
         {Object.values(streams).map(({ stream, username }) => {
