@@ -10,7 +10,3 @@ video {
   width: 400px;
   object-fit: cover;
   border-radius: 0.5rem;
-  transform: rotateY(180deg);
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
-}
