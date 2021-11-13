@@ -1,6 +1,6 @@
 {
   "name": "foghorn",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "main.js",
   "targets": {
     "main": false
@@ -12,19 +12,45 @@
     "Brendan Kennedy <brendan@bken.io>"
   ],
   "build": {
-    "appId": "com.bken.foghorn",
-    "productName": "Foghorn",
-    "mac": {
-      "category": "public.app-category.lifestyle"
-    },
-    "dmg": {
-      "icon": false
-    },
-    "linux": {
-      "target": [
-        "AppImage"
+    "appId": "com.bken.foghorn"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "Foghorn"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
       ],
-      "category": "Office"
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "bkenio",
+              "name": "foghorn",
+              "draft": true
+            }
+          }
+        }
+      ]
     }
   },
   "browserslist": [
@@ -38,12 +64,13 @@
     "start": "electron .",
     "lint": "eslint . --ext .ts",
     "pack": "electron-builder --dir",
-    "prebuild": "parcel build ./src/public/index.html --dist-dir build --public-url ./",
-    "build": "electron-builder --mac --windows --linux",
-    "release": "electron-builder --mac --windows --linux --publish always",
+    "compile": "parcel build ./src/public/index.html --dist-dir build --public-url ./",
+    "build": "electron-builder",
+    "publish": "electron-builder publish",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
+    "@electron-forge/publisher-github": "^6.0.0-beta.61",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "@types/react-router-dom": "^5.3.2",

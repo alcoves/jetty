@@ -1,27 +1,39 @@
-name: Tests
-on: [pull_request]
+name: Build
+on: [push, pull_request]
+
 jobs:
-  lint:
-    name: Lint
+  build_on_linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - name: Install
-        run: yarn install
-      - name: Lint
-        run: yarn lint
-  build:
-    name: Build
-    runs-on: ubuntu-latest
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@master
+      with:
+        node-version: 16
+    - name: install dependencies
+      run: yarn install
+    - name: build
+      run: yarn build
+
+  build_on_mac:
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - name: Install
-        run: yarn install
-      - name: Build
-        run: yarn build
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@master
+      with:
+        node-version: 16
+    - name: install dependencies
+      run: yarn install
+    - name: build
+      run: yarn build
+      
+  build_on_win:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@master
+      with:
+        node-version: 16
+    - name: install dependencies
+      run: yarn install
+    - name: build
+      run: yarn build
