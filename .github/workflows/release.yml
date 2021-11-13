@@ -10,6 +10,8 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - uses: actions/checkout@v2       
     - uses: actions/setup-node@master
@@ -22,6 +24,4 @@ jobs:
     - name: build
       run: yarn build
     - name: publish
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: yarn publish
