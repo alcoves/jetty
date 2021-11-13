@@ -1,10 +1,11 @@
 {
   "name": "foghorn",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "main.js",
   "targets": {
     "main": false
   },
+  "private": false,
   "description": "Easy voice calling",
   "repository": "git@github.com:bkenio/foghorn.git",
   "author": "Brendan Kennedy <brendan@bken.io>",

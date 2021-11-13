@@ -22,6 +22,4 @@ jobs:
     - name: build
       run: yarn build
     - name: publish
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: yarn run publish

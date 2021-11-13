@@ -60,12 +60,12 @@ export default function VoiceChat() {
 
     navigator.mediaDevices
     .getUserMedia({
-      // audio: {
-      //   channelCount: 1,
-      //   autoGainControl: true,
-      //   noiseSuppression: true,
-      //   echoCancellation: true,
-      // },
+      audio: {
+        channelCount: 1,
+        autoGainControl: true,
+        noiseSuppression: true,
+        echoCancellation: true,
+      },
       video: true,
     })
     .then((localStream) => {
