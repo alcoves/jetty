@@ -1,6 +1,6 @@
 {
   "name": "foghorn",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "main": "main.js",
   "targets": {
     "main": false
@@ -69,7 +69,7 @@
     "pack": "electron-builder --dir",
     "compile": "parcel build ./src/public/index.html --dist-dir build --public-url ./",
     "build": "electron-builder --publish never",
-    "publish": "electron-builder --publish always",
+    "release": "electron-builder",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
