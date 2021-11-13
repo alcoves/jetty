@@ -14,19 +14,22 @@ if (process.env.ELECTRON_START_URL) {
 let mainWindow
 
 app.on("ready", () => {
+  autoUpdater.checkForUpdatesAndNotify()
+
   let mainWindow = new BrowserWindow({
     width: 1000,
     height: 800,
+    backgroundColor: "#171923",
     // frame: false,
-    webPreferences: { nodeIntegration: true },
-    icon: path.join(__dirname, "./src/public/logo.png"),
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    // icon: path.join(__dirname, "./src/public/logo.png"),
   })
 
-  const startUrl = process.env.ELECTRON_START_URL || url.format({
-    slashes: true,
-    protocol: 'file:',
-    pathname: path.join(__dirname, 'build', 'index.html'),
-  })
+  const startUrl = process.env.ELECTRON_START_URL || 
+  `file://${path.join(__dirname, '/build/index.html')}`
 
   mainWindow.loadURL(startUrl)
 
@@ -49,6 +52,10 @@ app.on("ready", () => {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  })
 })
 
 // Quit when all windows are closed.
@@ -67,8 +74,6 @@ app.on("activate", function () {
     createWindow()
   }
 })
-
-autoUpdater.checkForUpdatesAndNotify()
 
 // autoUpdater.on("update-available", () => {
 //   console.log("app update availible")
