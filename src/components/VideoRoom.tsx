@@ -51,7 +51,7 @@ export default function VoiceChat() {
   useEffect(() => {
     console.log("Room mounted")
     peer = new PeerJS(undefined)
-    socket = io(`http://165.227.211.43:3200`)
+    socket = io(`http://foghorn-api.bken.io:3200`)
 
     peer.on('open', function(id) {
       console.log(`Joining room ${roomId} with id ${id} as user ${localUser}`)
