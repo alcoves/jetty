@@ -1,6 +1,6 @@
 {
   "name": "foghorn",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "main.js",
   "targets": {
     "main": false
@@ -13,15 +13,18 @@
   ],
   "build": {
     "appId": "com.bken.foghorn",
-    "files": [
-      "main.js",
-      "build/*"
-    ],
-    "win": {
-      "publish": [
-        "github"
+    "productName": "Foghorn",
+    "mac": {
+      "category": "public.app-category.lifestyle"
+    },
+    "dmg": {
+      "icon": false
+    },
+    "linux": {
+      "target": [
+        "AppImage"
       ],
-      "icon": "./src/public/favicon.ico"
+      "category": "Office"
     }
   },
   "browserslist": [
@@ -34,9 +37,10 @@
     "start:dev": "cross-env ELECTRON_START_URL=http://localhost:1234 electron .",
     "start": "electron .",
     "lint": "eslint . --ext .ts",
-    "build": "parcel build ./src/public/index.html --dist-dir build --public-url ./",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -p always",
+    "prebuild": "parcel build ./src/public/index.html --dist-dir build --public-url ./",
+    "build": "electron-builder --mac --windows --linux",
+    "release": "electron-builder --mac --windows --linux --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
