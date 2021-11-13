@@ -1,8 +1,6 @@
 // Basic init
-const url = require("url")
 const path = require("path")
 const electron = require("electron")
-
 const { autoUpdater } = require("electron-updater")
 const { app, BrowserWindow, dialog, ipcMain } = electron
 
@@ -72,9 +70,9 @@ autoUpdater.on("update-downloaded", () => {
   autoUpdater.quitAndInstall()
 })
 
-ipcMain.on("app_version", (event) => {
-  event.sender.send("app_version", { version: app.getVersion() })
-})
+// ipcMain.on("app_version", (event) => {
+//   event.sender.send("app_version", { version: app.getVersion() })
+// })
 
 // const getCommunityPath = () => {
 //   const appPath = app.getAppPath();

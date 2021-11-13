@@ -51,7 +51,7 @@ export default function VoiceChat() {
   useEffect(() => {
     console.log("Room mounted")
     peer = new PeerJS(undefined)
-    socket = io(`http://10.0.0.77:3100`)
+    socket = io(`http://165.227.211.43:3200`)
 
     peer.on('open', function(id) {
       console.log(`Joining room ${roomId} with id ${id} as user ${localUser}`)
