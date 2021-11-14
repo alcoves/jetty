@@ -139,13 +139,14 @@ export default function VoiceChat() {
         </Heading>
         <SimpleGrid spacing='10' align='center' justify='center' minChildWidth='300px'>
           {Object.values({ me: { stream: localStream, username: localUser }, ...streams }).map(
-            ({ stream, username }) => {
+            ({ stream, username }, index) => {
               return (
                 <VideoComponent
-                  key={stream?.id || localUser}
-                  username={username}
-                  stream={stream}
                   autoPlay
+                  stream={stream}
+                  username={username}
+                  muted={index === 0}
+                  key={stream?.id || localUser}
                 />
               )
             }

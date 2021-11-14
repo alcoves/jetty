@@ -9,7 +9,7 @@ type PropsType = VideoHTMLAttributes<HTMLVideoElement> & {
   username: string
 }
 
-export default function VideoComponent({ username, stream, ...props }: PropsType) {
+export default function VideoComponent({ muted, username, stream, ...props }: PropsType) {
   console.log('VideoComponent', stream)
   const mediaRef = useRef<HTMLVideoElement>(null)
   const [_, forceUpdate] = useReducer(x => x + 1, 0)
@@ -53,7 +53,7 @@ export default function VideoComponent({ username, stream, ...props }: PropsType
       </Flex>
       <Flex justify='center' align='center' h='100%'>
         <Avatar border={`solid ${audioEnabled ? '#48BB78' : 'red'} 3px`} name={username} />
-        {mediaRef ? <audio ref={mediaRef} {...props} /> : null}
+        {mediaRef ? <audio muted={muted} ref={mediaRef} {...props} /> : null}
       </Flex>
     </Flex>
   )
