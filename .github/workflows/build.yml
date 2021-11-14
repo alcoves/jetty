@@ -6,7 +6,7 @@ jobs:
     name: Build ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [windows-latest, macos-latest] # ubuntu-latest
     steps:
     - uses: actions/checkout@v2       
     - uses: actions/setup-node@master
