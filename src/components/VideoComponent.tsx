@@ -7,6 +7,7 @@ import { IoCamera, IoCameraOutline, IoMicOffOutline, IoMicOutline } from 'react-
 type PropsType = VideoHTMLAttributes<HTMLVideoElement> & {
   stream: MediaStream
   username: string
+  muted: boolean
 }
 
 export default function VideoComponent({ muted, username, stream, ...props }: PropsType) {

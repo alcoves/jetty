@@ -3,74 +3,40 @@ import io from 'socket.io-client'
 import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import VideoComponent from './VideoComponent'
-import {
-  IoCamera,
-  IoCameraOutline,
-  IoExitOutline,
-  IoMicOffOutline,
-  IoMicOutline,
-} from 'react-icons/io5'
-import {
-  IconButton,
-  HStack,
-  Box,
-  Button,
-  SimpleGrid,
-  Text,
-  Flex,
-  Avatar,
-  Heading,
-} from '@chakra-ui/react'
+import { IoExitOutline } from 'react-icons/io5'
+import { IconButton, SimpleGrid, Flex, Avatar, Heading } from '@chakra-ui/react'
 
 let peer
 let socket
-
-// const streams2 = {
-//   '1': { stream: null, username: 'a' },
-//   '2': { stream: null, username: 'b' },
-//   '3': { stream: null, username: 'c' },
-//   '4': { stream: null, username: 'd' },
-//   '5': { stream: null, username: 'e' },
-//   '6': { stream: null, username: 'f' },
-//   '7': { stream: null, username: 'g' },
-//   '8': { stream: null, username: 'h' },
-//   '9': { stream: null, username: 'i' },
-//   '10': { stream: null, username: 'j' }
-// }
 
 export default function VoiceChat() {
   const localUser = localStorage.getItem('username') || 'unknown'
   const navigate = useNavigate()
   const { roomId } = useParams()
-  const [localStream, setLocalStream] = useState(null)
-  const [streams, setStreams] = useState({})
-  // const [videoEnabled, setVideoEnabled] = useState(false)
-  // const [audioEnabled, setAudioEnabled] = useState(false)
+  const [streams, setStreams] = useState([])
 
-  function connectToNewUser(userId, username, stream) {
-    console.log(`connecting to user ${username} with id ${userId}`, stream)
-    const call = peer.call(userId, stream, { metadata: { username: localUser } })
+  function connectToNewUser(peerId, username, stream) {
+    console.log(`connecting to user ${username} with id ${peerId}`, stream)
+    const call = peer.call(peerId, stream, { metadata: { username: localUser } })
     console.log('connectToNewUser', call)
     call.on('stream', userVideoStream => {
-      setStreams(prevState => ({
-        ...prevState,
-        [userVideoStream.id]: {
-          stream: userVideoStream,
-          username,
-        },
-      }))
+      handleAddStream({ peerId, stream: userVideoStream, username })
     })
+  }
+
+  function handleRemoveStream(peerId) {
+    console.log('Removing peerId', peerId)
+    setStreams(prevState => prevState.filter(s => s.peerId !== peerId))
+  }
+
+  function handleAddStream(opts) {
+    setStreams(prevState => [...prevState, opts])
   }
 
   useEffect(() => {
     console.log('Room mounted')
     peer = new PeerJS(undefined)
     socket = io(`http://foghorn-api.bken.io:3200`)
-
-    peer.on('open', function (id) {
-      console.log(`Joining room ${roomId} with id ${id} as user ${localUser}`)
-      socket.emit('join-room', roomId, id, localUser)
-    })
 
     navigator.mediaDevices
       .getUserMedia({
@@ -83,21 +49,22 @@ export default function VoiceChat() {
         // video: true,
       })
       .then(localStream => {
-        setLocalStream(localStream)
-        console.log('localStream', localStream)
+        peer.on('open', function (id) {
+          console.log(`Joining room ${roomId} with peerId ${id} as user ${localUser}`)
+          socket.emit('join-room', roomId, id, localUser)
+          handleAddStream({ peerId: id, stream: localStream, isSelf: true, username: localUser })
+        })
 
         peer.on('call', function (call) {
           console.log('Peer has called', call)
           call.answer(localStream)
           call.on('stream', userVideoStream => {
             console.log('userVideoStream', userVideoStream)
-            setStreams(prevState => ({
-              ...prevState,
-              [userVideoStream.id]: {
-                stream: userVideoStream,
-                username: call?.metadata?.username || 'unknown',
-              },
-            }))
+            handleAddStream({
+              stream: userVideoStream,
+              peerId: call?.peer,
+              username: call?.metadata?.username || 'unknown',
+            })
           })
         })
 
@@ -106,16 +73,14 @@ export default function VoiceChat() {
           console.log('Peer On Disconnected Event')
         })
 
-        socket.on('user-connected', (userId, username) => {
-          console.log('User Connected', userId, username)
-          connectToNewUser(userId, username, localStream)
+        socket.on('user-connected', (peerId, username) => {
+          console.log('User Connected', peerId, username)
+          connectToNewUser(peerId, username, localStream)
         })
 
-        socket.on('user-disconnected', mediaStreamId => {
+        socket.on('user-disconnected', peerId => {
           console.log('User Disconnected Socket Message')
-          console.log(`Removing ${mediaStreamId} from list of streams`)
-          delete streams[mediaStreamId]
-          setStreams(streams)
+          handleRemoveStream(peerId)
         })
       })
     return () => socket.close()
@@ -138,19 +103,17 @@ export default function VoiceChat() {
           Room {roomId}
         </Heading>
         <SimpleGrid spacing='10' align='center' justify='center' minChildWidth='300px'>
-          {Object.values({ me: { stream: localStream, username: localUser }, ...streams }).map(
-            ({ stream, username }, index) => {
-              return (
-                <VideoComponent
-                  autoPlay
-                  stream={stream}
-                  username={username}
-                  muted={index === 0}
-                  key={stream?.id || localUser}
-                />
-              )
-            }
-          )}
+          {Object.values(streams).map(({ stream, username, isSelf }) => {
+            return (
+              <VideoComponent
+                autoPlay
+                muted={isSelf}
+                stream={stream}
+                key={stream.id}
+                username={username}
+              />
+            )
+          })}
         </SimpleGrid>
       </Flex>
     </Flex>
