@@ -1,23 +1,17 @@
 import React from 'react'
-import { Flex, Link, Text } from '@chakra-ui/react'
+import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react'
+import { IoCloseOutline, IoRemoveOutline, IoStopOutline } from 'react-icons/io5'
 
-// import { IoClose } from 'react-icons/io5'
-
-// import { ipcRenderer, shell } from 'electron'
-// console.log(ipcRenderer)
-
-// function titleBarAction(action) {
-//   console.log('action')
-//   ipcRenderer.send('titleBarAction', action)
-// }
-
-export default function TitleBar() {
-  // ipcRenderer.send('titleBarAction', 'action')
+export default function TitleBar(): JSX.Element {
+  function titleBarAction(action) {
+    window['electron'].notificationApi.sendNotification('titleBarAction', action)
+  }
 
   return (
     <Flex bg='gray.900' h='20px'>
       <Flex justify='space-between' w='100%' pl='2' align='center'>
         <Text
+          ml='1'
           fontSize='.7rem'
           color='gray.500'
           fontWeight='800'
@@ -25,24 +19,41 @@ export default function TitleBar() {
           letterSpacing='.05rem'
           textTransform='uppercase'
         >
-          <Link
-          // onClick={() => {
-          //   shell.openExternal('https://github.com/bkenio/foghorn')
-          // }}
-          >
-            bken
-          </Link>
+          bken
         </Text>
+        <Box w='100%' h='100%' userSelect='none' className='titleBarDrag' />
         <Flex h='20px'>
-          {/* <Button h='20px' variant='ghost' rounded='none'>
-            <IoClose />
-          </Button>
-          <Button h='20px' variant='unstyled' rounded='none'>
-            <IoClose />
-          </Button>
-          <Button h='20px' variant='unstyled' rounded='none'>
-            <IoClose />
-          </Button> */}
+          <IconButton
+            h='20px'
+            w='28px'
+            minW='28px'
+            rounded='none'
+            variant='ghost'
+            aria-label='quit'
+            icon={<IoRemoveOutline size='14px' />}
+            onClick={() => titleBarAction('minimize')}
+          />
+          <IconButton
+            h='20px'
+            w='28px'
+            minW='28px'
+            rounded='none'
+            variant='ghost'
+            aria-label='quit'
+            icon={<IoStopOutline size='14px' />}
+            onClick={() => titleBarAction('maximize')}
+          />
+          <IconButton
+            h='20px'
+            w='28px'
+            minW='28px'
+            rounded='none'
+            variant='ghost'
+            aria-label='quit'
+            icon={<IoCloseOutline size='20px' />}
+            _hover={{ bg: 'red.500' }}
+            onClick={() => titleBarAction('quit')}
+          />
         </Flex>
       </Flex>
     </Flex>

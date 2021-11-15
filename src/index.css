@@ -12,6 +12,14 @@ video {
   border-radius: 0.5rem;
 }
 
+*:focus {
+  box-shadow: none !important;
+}
+
+.titleBarDrag {
+  -webkit-app-region: drag;
+}
+
 @font-face {
   font-family: 'OpenSans';
   src: url('public/fonts/OpenSans-Regular.ttf') format('truetype');
