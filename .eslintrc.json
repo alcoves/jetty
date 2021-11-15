@@ -1,6 +1,9 @@
 {
-  "root": true,
-  "parser": "@typescript-eslint/parser",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
   "plugins": [
     "@typescript-eslint",
     "prettier"
@@ -9,8 +12,12 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/electron",
+    "plugin:import/typescript",
     "prettier"
   ],
+  "parser": "@typescript-eslint/parser",
   "rules": {
     "no-console": 1,
     "prettier/prettier": [

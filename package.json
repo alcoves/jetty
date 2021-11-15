@@ -1,26 +1,24 @@
 {
   "name": "foghorn",
+  "productName": "Foghorn",
   "version": "0.0.22",
-  "main": "electron.js",
-  "targets": {
-    "main": false
-  },
-  "private": false,
-  "description": "Easy voice calling",
+  "description": "Simple voice chat",
   "repository": "git@github.com:bkenio/foghorn.git",
-  "author": "Brendan Kennedy <brendan@bken.io>",
-  "license": "MPL-2.0",
-  "contributors": [
-    "Brendan Kennedy <brendan@bken.io>"
-  ],
-  "build": {
-    "appId": "com.bken.foghorn",
-    "files": [
-      "electron.js",
-      "node_modules",
-      "build/**/*"
-    ]
+  "main": ".webpack/main",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "build": "electron-forge make",
+    "release": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx .",
+    "lintp": "prettier src/**/*.ts* src/**/*.tsx* --write"
   },
+  "keywords": [],
+  "author": {
+    "name": "Brendan Kennedy",
+    "email": "brendan@bken.io"
+  },
+  "license": "MPL-2.0",
   "config": {
     "forge": {
       "packagerConfig": {},
@@ -29,8 +27,7 @@
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "Foghorn"
-          },
-          "draft": true
+          }
         },
         {
           "name": "@electron-forge/maker-zip",
@@ -47,6 +44,24 @@
           "config": {}
         }
       ],
+      "plugins": [
+        [
+          "@electron-forge/plugin-webpack",
+          {
+            "mainConfig": "./webpack.main.config.js",
+            "renderer": {
+              "config": "./webpack.renderer.config.js",
+              "entryPoints": [
+                {
+                  "html": "./src/index.html",
+                  "js": "./src/renderer.ts",
+                  "name": "main_window"
+                }
+              ]
+            }
+          }
+        ]
+      ],
       "publishers": [
         {
           "name": "@electron-forge/publisher-github",
@@ -61,52 +76,46 @@
       ]
     }
   },
-  "browserslist": [
-    "last 4 versions"
-  ],
-  "scripts": {
-    "dev": "parcel ./src/public/index.html",
-    "start:dev": "cross-env ELECTRON_START_URL=http://localhost:1234 electron .",
-    "start": "electron .",
-    "lint": "eslint . --ext .ts",
-    "lintp": "prettier src/**/*.ts* src/**/*.tsx* --write",
-    "pack": "electron-builder --dir",
-    "compile": "parcel build ./src/public/index.html --public-url ./ --dist-dir build",
-    "build": "electron-builder --publish never",
-    "release": "electron-builder",
-    "postinstall": "electron-builder install-app-deps"
-  },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.61",
+    "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
+    "@electron-forge/maker-zip": "^6.0.0-beta.61",
+    "@electron-forge/plugin-webpack": "6.0.0-beta.61",
     "@electron-forge/publisher-github": "^6.0.0-beta.61",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
-    "@types/react-router-dom": "^5.3.2",
-    "@types/socket.io-client": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.3.1",
-    "@typescript-eslint/parser": "^5.3.1",
-    "electron": "^15.3.1",
-    "electron-builder": "^22.13.1",
-    "electron-reload": "^2.0.0-alpha.1",
-    "eslint": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "@vercel/webpack-asset-relocator-loader": "1.7.0",
+    "css-loader": "^6.0.0",
+    "electron": "15.3.1",
+    "eslint": "^7.6.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "parcel": "^2.0.1",
+    "fork-ts-checker-webpack-plugin": "^6.0.1",
+    "node-loader": "^2.0.0",
     "prettier": "^2.4.1",
-    "typescript": "^4.4.4"
+    "style-loader": "^3.0.0",
+    "ts-loader": "^9.2.2",
+    "typescript": "^4.0.2"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.7.1",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
-    "@swc/helpers": "^0.2.14",
-    "cross-env": "^7.0.3",
-    "electron-updater": "^4.3.9",
-    "framer-motion": "4",
-    "peerjs": "^1.3.2",
+    "@emotion/react": "^11.6.0",
+    "@emotion/styled": "^11.6.0",
+    "@types/react-router-dom": "^5.3.2",
+    "@types/socket.io-client": "^3.0.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "framer-motion": "^5.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.0.2",
-    "socket.io-client": "^4.3.2"
+    "simple-peer": "^9.11.0",
+    "socket.io-client": "^4.3.2",
+    "update-electron-app": "^2.0.1"
   }
 }

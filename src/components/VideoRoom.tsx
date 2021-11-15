@@ -1,5 +1,5 @@
-import PeerJS from 'peerjs'
 import io from 'socket.io-client'
+import simplePeer from 'simple-peer'
 import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import VideoComponent from './VideoComponent'
@@ -8,6 +8,8 @@ import { IconButton, SimpleGrid, Flex, Avatar, Heading } from '@chakra-ui/react'
 
 let peer
 let socket
+
+// console.log(simplePeer)
 
 export default function VoiceChat() {
   const localUser = localStorage.getItem('username') || 'unknown'
@@ -35,15 +37,13 @@ export default function VoiceChat() {
 
   useEffect(() => {
     console.log('Room mounted')
-    peer = new PeerJS(undefined)
+    // peer = new PeerJS(undefined)
     socket = io(`http://foghorn-api.bken.io:3200`)
 
     navigator.mediaDevices
       .getUserMedia({
         audio: {
           channelCount: 1,
-          autoGainControl: true,
-          noiseSuppression: true,
           echoCancellation: true,
         },
         // video: true,

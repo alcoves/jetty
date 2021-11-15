@@ -1,7 +1,5 @@
 import { Avatar, Box, Flex, IconButton } from '@chakra-ui/react'
-import React, { VideoHTMLAttributes, useEffect, useRef } from 'react'
-import { useReducer } from 'react'
-import { useState } from 'react'
+import React, { VideoHTMLAttributes, useEffect, useRef, useReducer, useState } from 'react'
 import { IoCamera, IoCameraOutline, IoMicOffOutline, IoMicOutline } from 'react-icons/io5'
 
 type PropsType = VideoHTMLAttributes<HTMLVideoElement> & {

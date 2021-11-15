@@ -1,5 +1,5 @@
-import { Box, Flex, Heading, Input, Spacer } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import { Box, Heading, Input, Spacer } from '@chakra-ui/react'
 
 export default function Settings() {
   const [username, setUsername] = useState(localStorage.getItem('username') || '')
@@ -10,8 +10,7 @@ export default function Settings() {
       <Spacer h='10px' />
       <Box>
         <Heading size='xs' mb='2'>
-          {' '}
-          Username{' '}
+          Username
         </Heading>
         <Input
           autoFocus
