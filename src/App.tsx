@@ -5,29 +5,50 @@ import { HashRouter, Route, Routes } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 
 import Home from './components/Home'
-import Layout from './components/Layout'
+import Login from './components/Login'
 import Settings from './components/Settings'
 import VideoRoom from './components/VideoRoom'
+import PrivateRoute from './components/PrivateRoute'
 
 function Main() {
   return (
     <ChakraProvider theme={theme}>
       <HashRouter>
-        <Layout>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/settings' element={<Settings />} />
-            <Route path='/rooms/:roomId' element={<VideoRoom />} />
-            <Route
-              path='*'
-              element={
-                <main style={{ padding: '1rem' }}>
-                  <p>There's nothing here!</p>
-                </main>
-              }
-            />
-          </Routes>
-        </Layout>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route path='/login' element={<Login />} />
+          <Route
+            path='/'
+            element={
+              <PrivateRoute>
+                <Settings />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/rooms/:roomId'
+            element={
+              <PrivateRoute>
+                <VideoRoom />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='*'
+            element={
+              <main style={{ padding: '1rem' }}>
+                <p>404</p>
+              </main>
+            }
+          />
+        </Routes>
       </HashRouter>
     </ChakraProvider>
   )

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import VideoComponent from './VideoComponent'
 import { IoExitOutline } from 'react-icons/io5'
 import { IconButton, SimpleGrid, Flex, Avatar, Heading } from '@chakra-ui/react'
+import Layout from './Layout'
 
 let peer
 let socket
@@ -87,35 +88,37 @@ export default function VoiceChat() {
   }, [])
 
   return (
-    <Flex h='100%'>
-      <Flex align='center' justify='end' direction='column' bg='gray.800' w='60px' h='100%'>
-        <Flex align='center' py='1'>
-          <IconButton onClick={() => peer.disconnect()} aria-label='disconnect' size='md'>
-            <IoExitOutline />
-          </IconButton>
+    <Layout>
+      <Flex h='100%'>
+        <Flex align='center' justify='end' direction='column' bg='gray.800' w='60px' h='100%'>
+          <Flex align='center' py='1'>
+            <IconButton onClick={() => peer.disconnect()} aria-label='disconnect' size='md'>
+              <IoExitOutline />
+            </IconButton>
+          </Flex>
+          <Flex align='center' h='60px'>
+            <Avatar size='sm' name={localUser} />
+          </Flex>
         </Flex>
-        <Flex align='center' h='60px'>
-          <Avatar size='sm' name={localUser} />
+        <Flex p='4' direction='column' w='100%'>
+          <Heading size='md' mb='4'>
+            Room {roomId}
+          </Heading>
+          <SimpleGrid spacing='10' align='center' justify='center' minChildWidth='300px'>
+            {Object.values(streams).map(({ stream, username, isSelf }) => {
+              return (
+                <VideoComponent
+                  autoPlay
+                  muted={isSelf}
+                  stream={stream}
+                  key={stream.id}
+                  username={username}
+                />
+              )
+            })}
+          </SimpleGrid>
         </Flex>
       </Flex>
-      <Flex p='4' direction='column' w='100%'>
-        <Heading size='md' mb='4'>
-          Room {roomId}
-        </Heading>
-        <SimpleGrid spacing='10' align='center' justify='center' minChildWidth='300px'>
-          {Object.values(streams).map(({ stream, username, isSelf }) => {
-            return (
-              <VideoComponent
-                autoPlay
-                muted={isSelf}
-                stream={stream}
-                key={stream.id}
-                username={username}
-              />
-            )
-          })}
-        </SimpleGrid>
-      </Flex>
-    </Flex>
+    </Layout>
   )
 }
