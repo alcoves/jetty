@@ -6,6 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 
 import Home from './components/Home'
 import Login from './components/Login'
+import Register from './components/Register'
 import Settings from './components/Settings'
 import VideoRoom from './components/VideoRoom'
 import PrivateRoute from './components/PrivateRoute'
@@ -15,6 +16,8 @@ function Main() {
     <ChakraProvider theme={theme}>
       <HashRouter>
         <Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
           <Route
             path='/'
             element={
@@ -23,9 +26,8 @@ function Main() {
               </PrivateRoute>
             }
           />
-          <Route path='/login' element={<Login />} />
           <Route
-            path='/'
+            path='/settings'
             element={
               <PrivateRoute>
                 <Settings />
