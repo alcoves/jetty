@@ -2,7 +2,7 @@ import axios from 'axios'
 import jwt from 'jwt-decode'
 import cookies from 'js-cookie'
 
-const API_URL = 'http://localhost:3100'
+const API_URL = 'https://api.bken.io'
 
 axios.defaults.withCredentials = true
 

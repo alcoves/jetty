@@ -3,7 +3,7 @@ import { Flex, Box } from '@chakra-ui/react'
 import TitleBar from './TitleBar'
 import Sidebar from './Sidebar'
 
-export default function Layout({ children }) {
+export default function Layout({ children }): JSX.Element {
   return (
     <div>
       <TitleBar />

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Flex, Input } from '@chakra-ui/react'
 
-export default function Home() {
+export default function Home(): JSX.Element {
   const navigate = useNavigate()
   const [roomId, setRoomId] = useState('')
 
