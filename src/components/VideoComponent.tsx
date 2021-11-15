@@ -9,11 +9,11 @@ type PropsType = VideoHTMLAttributes<HTMLVideoElement> & {
 }
 
 export default function VideoComponent({ muted, username, stream, ...props }: PropsType) {
-  console.log('VideoComponent', stream)
+  console.log('VideoComponent', stream, stream.getAudioTracks)
   const mediaRef = useRef<HTMLVideoElement>(null)
   const [_, forceUpdate] = useReducer(x => x + 1, 0)
   // const videoEnabled = stream?.getVideoTracks()[0]?.enabled
-  const audioEnabled = stream?.getAudioTracks()[0]?.enabled
+  const audioEnabled = stream.getAudioTracks()[0].enabled
 
   useEffect(() => {
     if (stream && mediaRef.current) {

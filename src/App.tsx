@@ -10,6 +10,7 @@ import Register from './components/Register'
 import Settings from './components/Settings'
 import VideoRoom from './components/VideoRoom'
 import PrivateRoute from './components/PrivateRoute'
+import VoiceRoom from './components/VoiceRoom'
 
 function Main() {
   return (
@@ -38,7 +39,7 @@ function Main() {
             path='/rooms/:roomId'
             element={
               <PrivateRoute>
-                <VideoRoom />
+                <VoiceRoom />
               </PrivateRoute>
             }
           />

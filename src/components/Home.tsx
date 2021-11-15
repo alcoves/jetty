@@ -1,7 +1,7 @@
+import Layout from './Layout'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Flex, Input } from '@chakra-ui/react'
-import Layout from './Layout'
 
 export default function Home() {
   const navigate = useNavigate()
