@@ -5,9 +5,9 @@ const theme = extendTheme({
     initialColorMode: 'dark',
   },
   fonts: {
-    body: 'Titillium Web',
-    mono: 'Titillium Web',
-    heading: 'Titillium Web',
+    body: 'OpenSans',
+    mono: 'OpenSans',
+    heading: 'OpenSans',
   },
 })
 

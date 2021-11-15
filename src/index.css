@@ -11,3 +11,17 @@ video {
   object-fit: cover;
   border-radius: 0.5rem;
 }
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('public/fonts/OpenSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* @font-face {
+  font-family: "OpenSans";
+  src: url('public/fonts/OpenSans_Condensed-Regular.ttf') format("truetype");
+  font-weight: bold;
+  font-style: normal;
+} */
