@@ -1,10 +1,10 @@
 import React from 'react'
-import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react'
+import { Box, Flex, IconButton, Text } from '@chakra-ui/react'
 import { IoCloseOutline, IoRemoveOutline, IoStopOutline } from 'react-icons/io5'
 
 export default function TitleBar(): JSX.Element {
   function titleBarAction(action) {
-    window['electron'].notificationApi.sendNotification('titleBarAction', action)
+    window['electron'].api.send('titleBarAction', action)
   }
 
   return (

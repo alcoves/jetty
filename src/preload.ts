@@ -1,12 +1,12 @@
 import { ipcRenderer, contextBridge } from 'electron'
 
 contextBridge.exposeInMainWorld('electron', {
-  notificationApi: {
-    titleBarAction(message) {
-      ipcRenderer.send('titleBarAction', message)
+  api: {
+    send: (channel, data) => {
+      ipcRenderer.send(channel, data)
     },
-    sendNotification(message) {
-      ipcRenderer.send('notify', message)
+    receive: (channel, func) => {
+      ipcRenderer.on(channel, (event, ...args) => func(...args))
     },
   },
 })

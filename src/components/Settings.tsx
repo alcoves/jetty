@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
 import useUser from '../hooks/useUser'
-import { Button, Box, Heading, Input, Spacer } from '@chakra-ui/react'
+import { Button, Box, Heading, Input, Spacer, Text } from '@chakra-ui/react'
 
 export default function Settings() {
+  const [appVersion, setAppVersion] = useState()
   const { user, authenticated, loading, logout } = useUser()
+
+  useEffect(() => {
+    window['electron'].api.send('getApplicationVersion', '')
+    window['electron'].api.receive('getApplicationVersion', ({ version }) => {
+      setAppVersion(version)
+    })
+  }, [])
 
   return (
     <Layout>
@@ -30,6 +38,9 @@ export default function Settings() {
                 User ID
               </Heading>
               <Input disabled size='sm' w='300px' variant='filled' defaultValue={user.id} />
+            </Box>
+            <Box my='2'>
+              <Text>Application Version: {appVersion}</Text>
             </Box>
             <Button size='sm' bg='red.500' _hover={{ bg: 'red.600' }} onClick={logout}>
               Log out

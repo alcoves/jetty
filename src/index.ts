@@ -58,7 +58,7 @@ app.on('activate', () => {
 
 // IPC
 
-ipcMain.on('titleBarAction', (event, arg) => {
+ipcMain.on('titleBarAction', (_, arg) => {
   if (arg === 'maximize') {
     if (mainWindow.isMaximized()) {
       mainWindow.restore()
@@ -71,10 +71,6 @@ ipcMain.on('titleBarAction', (event, arg) => {
   if (arg === 'quit') app.quit()
 })
 
-ipcMain.on('app_version', event => {
-  event.sender.send('app_version', { version: app.getVersion() })
-})
-
-ipcMain.on('notify', (_, message) => {
-  new Notification({ title: 'Notification', body: message }).show()
+ipcMain.on('getApplicationVersion', event => {
+  event.sender.send('getApplicationVersion', { version: app.getVersion() })
 })
