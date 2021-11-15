@@ -2,28 +2,32 @@ import TitleBar from './TitleBar'
 import useUser from '../hooks/useUser'
 import React, { useState } from 'react'
 import { login } from '../lib/api'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { Box, Flex, Input, Heading, Button } from '@chakra-ui/react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Text, Box, Flex, Input, Heading, Button } from '@chakra-ui/react'
 
 export default function Login(): JSX.Element {
-  const { user } = useUser()
-
   const navigate = useNavigate()
+  const { authenticated } = useUser()
   const [email, setEmail] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
   const [password, setPassword] = useState('')
 
   async function handleLogin() {
-    await login(email, password)
-    navigate('/')
-  }
-
-  if (user) {
-    navigate('/')
-    return null
+    try {
+      await login(email, password)
+      navigate('/')
+    } catch (error) {
+      setErrorMsg('Email or password is invalid')
+    }
   }
 
   function enterHandler(e) {
     if (e.key === 'Enter') handleLogin()
+  }
+
+  if (authenticated) {
+    navigate('/')
+    return null
   }
 
   return (
@@ -32,9 +36,11 @@ export default function Login(): JSX.Element {
       <Flex justify='center' align='top'>
         <Flex w='300px' mt='100px' direction='column'>
           <Flex justify='center'>
-            <Heading size='lg'>Hello There!</Heading>
+            <Heading size='lg'>Hello there!</Heading>
           </Flex>
-
+          <Flex justify='center'>
+            <Text color='red.500'>{errorMsg}</Text>
+          </Flex>
           <Input
             mt='4'
             type='email'

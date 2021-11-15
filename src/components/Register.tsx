@@ -1,23 +1,34 @@
 import TitleBar from './TitleBar'
+import useUser from '../hooks/useUser'
 import { register } from '../lib/api'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Box, Flex, Input, Heading, Button } from '@chakra-ui/react'
+import { Text, Box, Flex, Input, Heading, Button } from '@chakra-ui/react'
 
-export default function Login(): JSX.Element {
+export default function Register(): JSX.Element {
   const navigate = useNavigate()
+  const { authenticated } = useUser()
   const [email, setEmail] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
 
   async function handleRegister() {
-    await register(email, username, password)
-    navigate('/')
-    return null
+    try {
+      await register(email, username, password)
+      navigate('/')
+    } catch (error) {
+      setErrorMsg('Failed to register account')
+    }
   }
 
   function enterHandler(e) {
     if (e.key === 'Enter') handleRegister()
+  }
+
+  if (authenticated) {
+    navigate('/')
+    return null
   }
 
   return (
@@ -25,7 +36,12 @@ export default function Login(): JSX.Element {
       <TitleBar />
       <Flex justify='center' align='top'>
         <Flex w='300px' mt='100px' direction='column'>
-          <Heading size='md'>Register</Heading>
+          <Flex justify='center'>
+            <Heading size='lg'>Create an Account</Heading>
+          </Flex>
+          <Flex justify='center'>
+            <Text color='red.500'>{errorMsg}</Text>
+          </Flex>
           <Input
             mt='4'
             type='email'
