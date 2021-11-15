@@ -22,14 +22,42 @@ video {
 
 @font-face {
   font-family: 'OpenSans';
-  src: url('public/fonts/OpenSans-Regular.ttf') format('truetype');
-  font-weight: normal;
+  src: url('public/fonts/OpenSans-Light.ttf') format('truetype');
+  font-weight: 300;
   font-style: normal;
 }
 
-/* @font-face {
-  font-family: "OpenSans";
-  src: url('public/fonts/OpenSans_Condensed-Regular.ttf') format("truetype");
+@font-face {
+  font-family: 'OpenSans';
+  src: url('public/fonts/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('public/fonts/OpenSans-SemiBold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
-} */
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('public/fonts/OpenSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('public/fonts/OpenSans-Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('public/fonts/OpenSans-ExtraBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
