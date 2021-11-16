@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 import React, { useEffect, useState } from 'react'
 import SimplePeer from 'simple-peer'
-import useUser from '../hooks/useUser'
+import { getUserSync } from '../hooks/useUser'
 import Layout from './Layout'
 import { IoExitOutline } from 'react-icons/io5'
 import VideoComponent from './VideoComponent'
@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 let socket
 
 export default function VoiceRoom(): JSX.Element {
-  const { user } = useUser()
+  const { user } = getUserSync()
   const navigate = useNavigate()
   const { roomId } = useParams()
   const [streams, setStreams] = useState([])
@@ -47,6 +47,8 @@ export default function VoiceRoom(): JSX.Element {
 
         peer.on('connect', () => {
           console.log('connected')
+          console.log(`Joining room ${roomId} with peerId ${user?.id} as user ${user?.username}`)
+          socket.emit('join-room', roomId, user?.id, user?.username)
           handleAddStream({ peerId: 'self', isSelf: true, stream, username: user?.username })
         })
 

@@ -46,3 +46,11 @@ export default function useUser(): UserHook {
 
   return { user, authenticated, loading, logout }
 }
+
+export function getUserSync(): any {
+  const userCookie = cookies.get('bken_user')
+  if (userCookie) {
+    return { user: JSON.parse(userCookie) }
+  }
+  return null
+}
