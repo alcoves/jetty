@@ -12,7 +12,7 @@ let socket
 
 // console.log(simplePeer)
 
-export default function VoiceChat() {
+export default function VoiceChat(): JSX.Element {
   const localUser = localStorage.getItem('username') || 'unknown'
   const navigate = useNavigate()
   const { roomId } = useParams()

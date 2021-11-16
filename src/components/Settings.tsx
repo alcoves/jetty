@@ -3,7 +3,7 @@ import Layout from './Layout'
 import useUser from '../hooks/useUser'
 import { Button, Box, Heading, Input, Spacer, Text } from '@chakra-ui/react'
 
-export default function Settings() {
+export default function Settings(): JSX.Element {
   const [appVersion, setAppVersion] = useState()
   const { user, authenticated, loading, logout } = useUser()
 

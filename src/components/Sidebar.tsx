@@ -3,7 +3,7 @@ import { Button, Flex, Link } from '@chakra-ui/react'
 import { Link as RouterDomLink } from 'react-router-dom'
 import { IoHomeOutline, IoSettingsOutline } from 'react-icons/io5'
 
-export default function Sidebar() {
+export default function Sidebar(): JSX.Element {
   return (
     <Flex justify='space-between' direction='column' w='60px' bg='gray.900'>
       <Flex justify='center' align='center' h='60px'>
