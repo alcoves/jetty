@@ -5,7 +5,7 @@ import { socket } from '../contexts/socket'
 import { useParams } from 'react-router-dom'
 import { getUserSync } from '../hooks/useUser'
 
-const rtcOptions = { iceServers: [{ urls: 'stun:stun.stunprotocol.org' }] }
+const rtcOptions = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }
 
 export default function Viewer({ username }) {
   const { roomId } = useParams()
@@ -37,9 +37,11 @@ export default function Viewer({ username }) {
     }
 
     socket.on('consume-response', sdp => {
-      console.log('consume-response', sdp)
+      console.log('consume-response', username, sdp)
       const desc = new RTCSessionDescription(sdp)
-      peer.setRemoteDescription(desc).catch(e => console.log(e))
+      peer.setRemoteDescription(desc).catch(e => {
+        console.error('setRemoteDescription', e)
+      })
     })
 
     peer.addTransceiver('video', { direction: 'recvonly' })

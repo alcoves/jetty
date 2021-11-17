@@ -7,7 +7,7 @@ import { getUserSync } from '../hooks/useUser'
 import { SocketContext } from '../contexts/socket'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 
-const rtcOptions = { iceServers: [{ urls: 'stun:stun.stunprotocol.org' }] }
+const rtcOptions = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }
 
 export default function Room(): JSX.Element {
   const srcRef = useRef()
@@ -19,12 +19,13 @@ export default function Room(): JSX.Element {
 
   useEffect(() => {
     socket.on('users', users => setUsers(users || []))
+    const peer = new RTCPeerConnection(rtcOptions)
 
     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
       // @ts-ignore
       srcRef.current.srcObject = stream
-      const peer = new RTCPeerConnection(rtcOptions)
       peer.onnegotiationneeded = async () => {
+        console.log('negotiation needed')
         const offer = await peer.createOffer()
         await peer.setLocalDescription(offer)
         socket.emit('join', roomId, user, peer.localDescription)
@@ -48,6 +49,7 @@ export default function Room(): JSX.Element {
     })
 
     return () => {
+      peer.close()
       socket.emit('leave', roomId, user)
     }
   }, [])
