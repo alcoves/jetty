@@ -9,7 +9,7 @@ type PropsType = VideoHTMLAttributes<HTMLVideoElement> & {
 }
 
 export default function VideoComponent({ muted, username, stream, ...props }: PropsType) {
-  console.log('VideoComponent', stream, stream.getAudioTracks)
+  // console.log('VideoComponent', stream, stream.getAudioTracks)
   const mediaRef = useRef<HTMLVideoElement>(null)
   const [_, forceUpdate] = useReducer(x => x + 1, 0)
   // const videoEnabled = stream?.getVideoTracks()[0]?.enabled

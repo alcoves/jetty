@@ -6,7 +6,7 @@ import { IoHomeOutline, IoSettingsOutline } from 'react-icons/io5'
 export default function Sidebar(): JSX.Element {
   return (
     <Flex justify='space-between' direction='column' w='60px' bg='gray.900'>
-      <Flex justify='center' align='center' h='60px'>
+      <Flex justify='center' align='center' h='60px' direction='column'>
         <Link as={RouterDomLink} to='/'>
           <Button w='60px' h='60px' variant='ghost' rounded='none'>
             <IoHomeOutline />

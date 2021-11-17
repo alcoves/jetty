@@ -4,14 +4,16 @@ import cookies from 'js-cookie'
 
 const API_URL = 'https://api.bken.io'
 
-axios.defaults.withCredentials = true
-
 export async function login(email: string, password: string) {
   try {
-    const response = await axios.post(`${API_URL}/auth/login`, {
-      email,
-      password,
-    })
+    const response = await axios.post(
+      `${API_URL}/auth/login`,
+      {
+        email,
+        password,
+      },
+      { withCredentials: true }
+    )
 
     const user = jwt(response.data?.token)
     cookies.set('bken_user', JSON.stringify(user), { expires: 6 })
@@ -23,11 +25,15 @@ export async function login(email: string, password: string) {
 
 export async function register(email: string, username: string, password: string) {
   try {
-    const response = await axios.post(`${API_URL}/auth/register`, {
-      email,
-      username,
-      password,
-    })
+    const response = await axios.post(
+      `${API_URL}/auth/register`,
+      {
+        email,
+        username,
+        password,
+      },
+      { withCredentials: true }
+    )
     const user = jwt(response.data?.token)
     cookies.set('bken_user', JSON.stringify(user), { expires: 6 })
   } catch (error) {
