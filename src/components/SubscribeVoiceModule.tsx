@@ -1,5 +1,4 @@
 import hark from 'hark'
-import { io } from 'socket.io-client'
 import { useParams } from 'react-router-dom'
 import { getUserSync } from '../hooks/useUser'
 import { Avatar, Box } from '@chakra-ui/react'
@@ -9,15 +8,13 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 const rtcOptions = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }
 
 export default function Viewer({ username }) {
-  const socket = useContext(SocketContext)
+  const { socket } = useContext(SocketContext)
   const { roomId } = useParams()
   const { user } = getUserSync()
   const [border, setBorder] = useState('')
   const viewerRef = useRef()
 
   useEffect(() => {
-    const socket = io('http://foghorn-api.bken.io:3200')
-    console.log('Mounted Viewer')
     const peer = new RTCPeerConnection(rtcOptions)
 
     peer.ontrack = e => {
@@ -52,7 +49,7 @@ export default function Viewer({ username }) {
     peer.addTransceiver('audio', { direction: 'recvonly' })
     return () => {
       peer.close()
-      socket.close()
+      socket.off('consume-response')
     }
   }, [])
 

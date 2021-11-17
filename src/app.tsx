@@ -1,6 +1,6 @@
-import React from 'react'
 import theme from './theme'
 import ReactDOM from 'react-dom'
+import React, { useMemo } from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { socket, SocketContext } from './contexts/socket'
@@ -13,8 +13,9 @@ import Settings from './components/Settings'
 import PrivateRoute from './components/PrivateRoute'
 
 function Main() {
+  const value = useMemo(() => ({ socket }), [socket])
   return (
-    <SocketContext.Provider value={socket}>
+    <SocketContext.Provider value={value}>
       <ChakraProvider theme={theme}>
         <HashRouter>
           <Routes>

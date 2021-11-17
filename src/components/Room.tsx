@@ -1,11 +1,11 @@
 import hark from 'hark'
 import Layout from './Layout'
-import { io } from 'socket.io-client'
 import { useParams } from 'react-router-dom'
 import { getUserSync } from '../hooks/useUser'
+import { SocketContext } from '../contexts/socket'
 import { Avatar, Flex, Text } from '@chakra-ui/react'
 import SubscribeVoiceModule from './SubscribeVoiceModule'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 
 const rtcOptions = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }
 
@@ -14,10 +14,10 @@ export default function Room(): JSX.Element {
   const { user } = getUserSync()
   const { roomId } = useParams()
   const [users, setUsers] = useState([])
+  const { socket } = useContext(SocketContext)
   const [border, setBorder] = useState('')
 
   useEffect(() => {
-    const socket = io('http://foghorn-api.bken.io:3200')
     socket.on('users', users => setUsers(users || []))
     const peer = new RTCPeerConnection(rtcOptions)
 
@@ -51,7 +51,8 @@ export default function Room(): JSX.Element {
     return () => {
       peer.close()
       socket.emit('leave', roomId, user)
-      socket.close()
+      socket.off('broadcast-response')
+      socket.off('users')
     }
   }, [])
 

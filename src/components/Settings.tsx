@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button, Box, Heading, Input, Spacer, Text, Flex } from '@chakra-ui/react'
 
 export default function Settings(): JSX.Element {
-  const socket = useContext(SocketContext)
+  const { socket } = useContext(SocketContext)
   const [appVersion, setAppVersion] = useState()
   const { user, authenticated, loading, logout } = useUser()
 
@@ -15,8 +15,6 @@ export default function Settings(): JSX.Element {
     window['electron'].api.receive('getApplicationVersion', ({ version }) => {
       setAppVersion(version)
     })
-
-    console.log(socket)
   }, [])
 
   return (
