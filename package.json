@@ -1,7 +1,7 @@
 {
   "name": "foghorn",
   "productName": "Foghorn",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Simple voice chat",
   "repository": "git@github.com:bkenio/foghorn.git",
   "main": ".webpack/main",
