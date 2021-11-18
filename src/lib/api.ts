@@ -1,22 +1,17 @@
 import axios from 'axios'
 import jwt from 'jwt-decode'
-import cookies from 'js-cookie'
 
 const API_URL = 'https://api.bken.io'
 
 export async function login(email: string, password: string) {
   try {
-    const response = await axios.post(
-      `${API_URL}/auth/login`,
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    )
+    const response = await axios.post(`${API_URL}/auth/login`, {
+      email,
+      password,
+    })
 
     const user = jwt(response.data?.token)
-    cookies.set('bken_user', JSON.stringify(user), { expires: 6 })
+    localStorage.setItem('user', JSON.stringify(user))
   } catch (error) {
     console.error(error)
     throw new Error(error)
@@ -25,17 +20,13 @@ export async function login(email: string, password: string) {
 
 export async function register(email: string, username: string, password: string) {
   try {
-    const response = await axios.post(
-      `${API_URL}/auth/register`,
-      {
-        email,
-        username,
-        password,
-      },
-      { withCredentials: true }
-    )
+    const response = await axios.post(`${API_URL}/auth/register`, {
+      email,
+      username,
+      password,
+    })
     const user = jwt(response.data?.token)
-    cookies.set('bken_user', JSON.stringify(user), { expires: 6 })
+    localStorage.setItem('user', JSON.stringify(user))
   } catch (error) {
     console.error(error)
     throw new Error(error)

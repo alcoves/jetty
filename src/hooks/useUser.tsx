@@ -1,4 +1,3 @@
-import cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -22,20 +21,26 @@ export default function useUser(): UserHook {
   const [authenticated, setAuthenticated] = useState(false)
 
   function logout() {
-    cookies.remove('bken_user')
+    localStorage.removeItem('user')
     setAuthenticated(false)
     setUser(null)
     navigate('/login')
   }
 
   useEffect(() => {
-    const userCookie = cookies.get('bken_user')
-    if (userCookie) {
-      const user = JSON.parse(userCookie)
+    const localStorageUser = localStorage.getItem('user')
+    if (localStorageUser) {
+      const user = JSON.parse(localStorageUser)
       if (user && user.id) {
-        setUser(user)
-        setAuthenticated(true)
-        setLoading(false)
+        if (Date.now() >= user.exp * 1000) {
+          logout()
+          setAuthenticated(false)
+          setLoading(false)
+        } else {
+          setUser(user)
+          setAuthenticated(true)
+          setLoading(false)
+        }
       } else {
         setLoading(false)
       }
@@ -48,9 +53,15 @@ export default function useUser(): UserHook {
 }
 
 export function getUserSync(): any {
-  const userCookie = cookies.get('bken_user')
-  if (userCookie) {
-    return { user: JSON.parse(userCookie) }
+  const localStorageUser = localStorage.getItem('user')
+
+  if (localStorageUser) {
+    const user = JSON.parse(localStorageUser)
+    if (Date.now() >= user.exp * 1000) {
+      window.location.replace('/login')
+    } else {
+      return { user }
+    }
   }
   return null
 }
