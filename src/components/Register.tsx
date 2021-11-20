@@ -1,30 +1,24 @@
 import TitleBar from './TitleBar'
 import useUser from '../hooks/useUser'
-import { register } from '../lib/api'
-import React, { useState } from 'react'
+import { REGISTER } from '../graphql/schema'
+import { useMutation } from '@apollo/client'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Text, Box, Flex, Input, Heading, Button } from '@chakra-ui/react'
 
 export default function Register(): JSX.Element {
   const navigate = useNavigate()
-  const { authenticated } = useUser()
+  const { authenticated, login } = useUser()
   const [email, setEmail] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
+  const [mutateFunction, { data, loading, error }] = useMutation(REGISTER)
 
-  async function handleRegister() {
-    try {
-      await register(email, username, password)
-      navigate('/')
-    } catch (error) {
-      setErrorMsg('Failed to register account')
-    }
-  }
-
-  function enterHandler(e) {
-    if (e.key === 'Enter') handleRegister()
-  }
+  useEffect(() => {
+    if (error) setErrorMsg(error.message)
+    if (data) login(data.register.accessToken)
+  }, [data, error])
 
   if (authenticated) {
     navigate('/')
@@ -61,10 +55,37 @@ export default function Register(): JSX.Element {
             type='password'
             variant='filled'
             placeholder='password'
-            onKeyPress={enterHandler}
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                mutateFunction({
+                  variables: {
+                    input: {
+                      email,
+                      username,
+                      password,
+                    },
+                  },
+                })
+              }
+            }}
             onChange={e => setPassword(e.target.value)}
           />
-          <Button mt='4' _hover={{ bg: 'teal.500' }} onClick={handleRegister}>
+          <Button
+            mt='4'
+            isDisabled={loading}
+            _hover={{ bg: 'teal.500' }}
+            onClick={() => {
+              mutateFunction({
+                variables: {
+                  input: {
+                    email,
+                    username,
+                    password,
+                  },
+                },
+              })
+            }}
+          >
             Register
           </Button>
           <Flex fontSize='.8rem' w='100%' justify='center' p='2'>

@@ -1,29 +1,23 @@
 import TitleBar from './TitleBar'
 import useUser from '../hooks/useUser'
-import React, { useState } from 'react'
-import { login } from '../lib/api'
+import { LOGIN } from '../graphql/schema'
+import { useMutation } from '@apollo/client'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Text, Box, Flex, Input, Heading, Button } from '@chakra-ui/react'
 
 export default function Login(): JSX.Element {
   const navigate = useNavigate()
-  const { authenticated } = useUser()
+  const { authenticated, login } = useUser()
   const [email, setEmail] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [password, setPassword] = useState('')
+  const [mutateFunction, { data, loading, error }] = useMutation(LOGIN)
 
-  async function handleLogin() {
-    try {
-      await login(email, password)
-      navigate('/')
-    } catch (error) {
-      setErrorMsg('Email or password is invalid')
-    }
-  }
-
-  function enterHandler(e) {
-    if (e.key === 'Enter') handleLogin()
-  }
+  useEffect(() => {
+    if (error) setErrorMsg(error.message)
+    if (data) login(data.login.accessToken)
+  }, [data, error])
 
   if (authenticated) {
     navigate('/')
@@ -53,10 +47,35 @@ export default function Login(): JSX.Element {
             type='password'
             variant='filled'
             placeholder='password'
-            onKeyPress={enterHandler}
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                mutateFunction({
+                  variables: {
+                    input: {
+                      email,
+                      password,
+                    },
+                  },
+                })
+              }
+            }}
             onChange={e => setPassword(e.target.value)}
           />
-          <Button mt='4' _hover={{ bg: 'teal.500' }} onClick={handleLogin}>
+          <Button
+            mt='4'
+            isLoading={loading}
+            _hover={{ bg: 'teal.500' }}
+            onClick={() => {
+              mutateFunction({
+                variables: {
+                  input: {
+                    email,
+                    password,
+                  },
+                },
+              })
+            }}
+          >
             Login
           </Button>
           <Flex fontSize='.8rem' w='100%' justify='center' p='2'>

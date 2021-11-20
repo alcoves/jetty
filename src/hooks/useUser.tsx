@@ -1,3 +1,5 @@
+import jwt from 'jwt-decode'
+import cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,6 +14,7 @@ interface UserHook {
   loading: boolean
   logout: () => void
   authenticated: boolean
+  login: (token: string) => void
 }
 
 export default function useUser(): UserHook {
@@ -21,16 +24,22 @@ export default function useUser(): UserHook {
   const [authenticated, setAuthenticated] = useState(false)
 
   function logout() {
-    localStorage.removeItem('user')
+    cookies.remove('user')
     setAuthenticated(false)
     setUser(null)
     navigate('/login')
   }
 
+  function login(token: string) {
+    const user = jwt(token)
+    cookies.set('user', JSON.stringify(user))
+    navigate('/')
+  }
+
   useEffect(() => {
-    const localStorageUser = localStorage.getItem('user')
-    if (localStorageUser) {
-      const user = JSON.parse(localStorageUser)
+    const cookieUser = cookies.get('user')
+    if (cookieUser) {
+      const user = JSON.parse(cookieUser)
       if (user && user.id) {
         if (Date.now() >= user.exp * 1000) {
           logout()
@@ -49,15 +58,16 @@ export default function useUser(): UserHook {
     }
   }, [])
 
-  return { user, authenticated, loading, logout }
+  return { user, authenticated, loading, logout, login }
 }
 
 export function getUserSync(): any {
-  const localStorageUser = localStorage.getItem('user')
+  const cookieUser = cookies.get('user')
 
-  if (localStorageUser) {
-    const user = JSON.parse(localStorageUser)
+  if (cookieUser) {
+    const user = JSON.parse(cookieUser)
     if (Date.now() >= user.exp * 1000) {
+      cookies.remove('user')
       window.location.replace('/login')
     } else {
       return { user }

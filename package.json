@@ -82,6 +82,30 @@
       ]
     }
   },
+  "dependencies": {
+    "@apollo/client": "^3.4.17",
+    "@chakra-ui/react": "^1.7.1",
+    "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@emotion/react": "^11.6.0",
+    "@emotion/styled": "^11.6.0",
+    "@types/js-cookie": "^3.0.1",
+    "@types/react-router-dom": "^5.3.2",
+    "@types/socket.io-client": "^3.0.0",
+    "axios": "^0.24.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "framer-motion": "^5.3.0",
+    "graphql": "^16.0.1",
+    "hark": "^1.2.3",
+    "js-cookie": "^3.0.1",
+    "jwt-decode": "^3.1.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "react-router-dom": "^6.0.2",
+    "simple-peer": "^9.11.0",
+    "socket.io-client": "^4.3.2",
+    "update-electron-app": "^2.0.1"
+  },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.61",
     "@electron-forge/maker-rpm": "^6.0.0-beta.61",
@@ -89,7 +113,6 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "@electron-forge/plugin-webpack": "6.0.0-beta.61",
     "@electron-forge/publisher-github": "^6.0.0-beta.61",
-    "@types/axios": "^0.14.0",
     "@types/react": "^17.0.35",
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
@@ -107,25 +130,5 @@
     "style-loader": "^3.0.0",
     "ts-loader": "^9.2.2",
     "typescript": "^4.0.2"
-  },
-  "dependencies": {
-    "@chakra-ui/react": "^1.7.1",
-    "@electron-forge/maker-deb": "^6.0.0-beta.61",
-    "@emotion/react": "^11.6.0",
-    "@emotion/styled": "^11.6.0",
-    "@types/react-router-dom": "^5.3.2",
-    "@types/socket.io-client": "^3.0.0",
-    "axios": "^0.24.0",
-    "electron-squirrel-startup": "^1.0.0",
-    "framer-motion": "^5.3.0",
-    "hark": "^1.2.3",
-    "jwt-decode": "^3.1.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-icons": "^4.3.1",
-    "react-router-dom": "^6.0.2",
-    "simple-peer": "^9.11.0",
-    "socket.io-client": "^4.3.2",
-    "update-electron-app": "^2.0.1"
   }
 }
