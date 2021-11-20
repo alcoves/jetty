@@ -1,9 +1,9 @@
 {
-  "name": "foghorn",
-  "productName": "Foghorn",
+  "name": "jetty",
+  "productName": "Bken",
   "version": "0.0.25",
   "description": "Simple voice chat",
-  "repository": "git@github.com:bkenio/foghorn.git",
+  "repository": "git@github.com:bkenio/jetty.git",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -26,7 +26,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Foghorn"
+            "name": "Bken"
           }
         },
         {
@@ -74,7 +74,7 @@
           "config": {
             "repository": {
               "owner": "bkenio",
-              "name": "foghorn",
+              "name": "jetty",
               "draft": true
             }
           }
