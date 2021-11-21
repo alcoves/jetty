@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 
 interface User {
   id: string
+  iat: number
+  exp: number
   email: string
   username: string
 }
@@ -24,22 +26,21 @@ export default function useUser(): UserHook {
   const [authenticated, setAuthenticated] = useState(false)
 
   function logout() {
-    cookies.remove('user')
+    cookies.remove('token')
     setAuthenticated(false)
     setUser(null)
     navigate('/login')
   }
 
   function login(token: string) {
-    const user = jwt(token)
-    cookies.set('user', JSON.stringify(user))
+    cookies.set('token', token)
     navigate('/')
   }
 
   useEffect(() => {
-    const cookieUser = cookies.get('user')
-    if (cookieUser) {
-      const user = JSON.parse(cookieUser)
+    const jwtToken = cookies.get('token')
+    if (jwtToken) {
+      const user = jwt<User>(jwtToken)
       if (user && user.id) {
         if (Date.now() >= user.exp * 1000) {
           logout()
@@ -62,12 +63,11 @@ export default function useUser(): UserHook {
 }
 
 export function getUserSync(): any {
-  const cookieUser = cookies.get('user')
-
-  if (cookieUser) {
-    const user = JSON.parse(cookieUser)
+  const jwtToken = cookies.get('token')
+  if (jwtToken) {
+    const user = jwt<User>(jwtToken)
     if (Date.now() >= user.exp * 1000) {
-      cookies.remove('user')
+      cookies.remove('token')
       window.location.replace('/login')
     } else {
       return { user }

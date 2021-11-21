@@ -1,10 +1,11 @@
 import theme from './theme'
 import ReactDOM from 'react-dom'
 import React, { useMemo } from 'react'
+import apolloClient from './graphql/client'
+import { ApolloProvider } from '@apollo/client'
 import { ChakraProvider } from '@chakra-ui/react'
 import { socket, SocketContext } from './contexts/socket'
 import { HashRouter, Route, Routes } from 'react-router-dom'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
 import Home from './components/Home'
 import Room from './components/Room'
@@ -12,16 +13,12 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Settings from './components/Settings'
 import PrivateRoute from './components/PrivateRoute'
-
-const client = new ApolloClient({
-  uri: process.env.NODE_ENV === 'production' ? 'https://pier.bken.io' : 'http://localhost:4000',
-  cache: new InMemoryCache(),
-})
+import Harbour from './components/Harbours/Harbour'
 
 function Main() {
   const value = useMemo(() => ({ socket }), [socket])
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <SocketContext.Provider value={value}>
         <ChakraProvider theme={theme}>
           <HashRouter>
@@ -41,6 +38,22 @@ function Main() {
                 element={
                   <PrivateRoute>
                     <Settings />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path='/harbours/:harbourId'
+                element={
+                  <PrivateRoute>
+                    <Harbour />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path='/harbours/:harbourId/channels/:channelId'
+                element={
+                  <PrivateRoute>
+                    <Harbour />
                   </PrivateRoute>
                 }
               />

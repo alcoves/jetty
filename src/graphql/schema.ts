@@ -15,3 +15,31 @@ export const LOGIN = gql`
     }
   }
 `
+
+export const GET_HARBOUR = gql`
+  query GetHarbour($_id: String!) {
+    getHarbour(_id: $_id) {
+      _id
+      name
+      image
+    }
+  }
+`
+
+export const GET_HARBOURS = gql`
+  query GetHarbours {
+    getHarbours {
+      _id
+      name
+      image
+    }
+  }
+`
+
+export const CREATE_HARBOUR = gql`
+  mutation CreateHarbour($input: CreateHarbourInput) {
+    createHarbour(input: $input) {
+      _id
+    }
+  }
+`
