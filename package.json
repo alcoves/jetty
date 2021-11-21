@@ -101,8 +101,11 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.0.2",
+    "react-table": "^7.7.0",
+    "react-window": "^1.8.6",
     "simple-peer": "^9.11.0",
     "socket.io-client": "^4.3.2",
+    "subscriptions-transport-ws": "^0.11.0",
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {

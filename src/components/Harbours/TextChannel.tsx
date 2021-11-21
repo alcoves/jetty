@@ -1,41 +1,54 @@
-import { DateTime } from 'luxon'
-import React, { useRef, useState } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
-import { Avatar, Box, Flex, Input, Text } from '@chakra-ui/react'
-import { GET_CHANNEL_MESSAGES, CREATE_MESSAGE } from '../../graphql/schema'
+import SendMessage from './SendMessage'
+import React, { useEffect, useState } from 'react'
+import { useQuery, useSubscription } from '@apollo/client'
+import { Avatar, Flex, Text } from '@chakra-ui/react'
+import { GET_CHANNEL_MESSAGES, CHANNEL_MESSAGES_SUBSCRIPTION } from '../../graphql/schema'
 
 export default function TextChannel({ id }: { id: string }) {
-  const inputRef = useRef(null)
-  const [content, setContent] = useState('')
+  const [messages, setMessages] = useState([])
 
   const {
+    refetch,
     data: getChannelMessagesData,
     error: getChannelMessagesError,
     loading: getChannelMessagesLoading,
-  } = useQuery(GET_CHANNEL_MESSAGES, { variables: { channel: id }, pollInterval: 500 })
+  } = useQuery(GET_CHANNEL_MESSAGES, {
+    variables: { input: { channel: id, skip: 0 } },
+  })
 
-  const [
-    mutateFunction,
-    { data: addedMessageData, loading: sendingMessageLoading, error: errorSendingMessage },
-  ] = useMutation(CREATE_MESSAGE)
+  const { data: channelSubData, loading: channelSubLoading } = useSubscription(
+    CHANNEL_MESSAGES_SUBSCRIPTION,
+    {
+      variables: { channelId: id },
+    }
+  )
 
-  async function submitMessage() {
-    await mutateFunction({
-      variables: {
-        input: {
-          channel: id,
-          content: content,
-        },
-      },
-    })
-    setContent('')
-    inputRef.current.focus()
+  useEffect(() => {
+    if (getChannelMessagesData && !getChannelMessagesError && !getChannelMessagesLoading) {
+      setMessages(getChannelMessagesData.getChannelMessages)
+    }
+  }, [getChannelMessagesData, getChannelMessagesError, getChannelMessagesLoading])
+
+  useEffect(() => {
+    if (channelSubData) {
+      setMessages(prevState => [channelSubData.channelMessages, ...prevState])
+    }
+  }, [channelSubData, channelSubLoading])
+
+  function handleScroll(e) {
+    const height = e.target.scrollHeight - e.target.clientHeight
+    const offset = e.target.scrollTop * -1
+
+    if (height - offset === 1) {
+      refetch()
+      console.log('top of page reached')
+    }
   }
 
   return (
     <Flex direction='column' justify='end' w='100%' p='15px'>
-      <Flex overflow='auto' direction='column-reverse'>
-        {getChannelMessagesData?.getChannelMessages.map(message => {
+      <Flex overflow='auto' direction='column-reverse' onScroll={handleScroll}>
+        {messages?.map(message => {
           return (
             <Flex key={message._id} p='2'>
               <Avatar size='sm' name={message?.user?.username} mr='15px' />
@@ -53,22 +66,7 @@ export default function TextChannel({ id }: { id: string }) {
           )
         })}
       </Flex>
-      <Box mt='15px'>
-        <Input
-          multiple
-          autoFocus
-          ref={inputRef}
-          value={content}
-          placeholder={`Message ${id}`}
-          isDisabled={sendingMessageLoading}
-          onChange={e => setContent(e.target.value)}
-          onKeyPress={e => {
-            if (e.key === 'Enter' && content.length > 0) {
-              submitMessage()
-            }
-          }}
-        />
-      </Box>
+      <SendMessage channelId={id} />
     </Flex>
   )
 }

@@ -57,8 +57,8 @@ export const CREATE_CHANNEL = gql`
 `
 
 export const GET_CHANNEL_MESSAGES = gql`
-  query GetChannelMessages($channel: String!) {
-    getChannelMessages(channel: $channel) {
+  query GetChannelMessages($input: GetChannelInput!) {
+    getChannelMessages(input: $input) {
       _id
       content
       updatedAt
@@ -76,6 +76,20 @@ export const CREATE_MESSAGE = gql`
   mutation CreateMessage($input: CreateMessageInput!) {
     createMessage(input: $input) {
       _id
+    }
+  }
+`
+
+export const CHANNEL_MESSAGES_SUBSCRIPTION = gql`
+  subscription ChannelMessages($channelId: String!) {
+    channelMessages(channelId: $channelId) {
+      _id
+      content
+      user {
+        _id
+        image
+        username
+      }
     }
   }
 `
