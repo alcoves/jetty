@@ -1,12 +1,9 @@
 import Layout from './Layout'
 import useUser from '../hooks/useUser'
-import { IoFlash } from 'react-icons/io5'
-import { SocketContext } from '../contexts/socket'
-import React, { useContext, useEffect, useState } from 'react'
-import { Button, Box, Heading, Input, Spacer, Text, Flex } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import { Button, Box, Heading, Input, Spacer, Text } from '@chakra-ui/react'
 
 export default function Settings(): JSX.Element {
-  const { socket } = useContext(SocketContext)
   const [appVersion, setAppVersion] = useState()
   const { user, authenticated, loading, logout } = useUser()
 
@@ -24,19 +21,6 @@ export default function Settings(): JSX.Element {
         <Spacer h='10px' />
         {!loading && authenticated && (
           <Box>
-            <Flex my='2' direction='column'>
-              <Heading size='xs' mb='2'>
-                WebSocket Status
-              </Heading>
-              <Flex align='center'>
-                <Box color={`${socket.connected ? 'green.500' : 'red.500'}`}>
-                  <IoFlash />
-                </Box>
-                <Text ml='1' fontSize='.9rem'>
-                  {socket.connected ? 'Connected' : 'Disconnected'}
-                </Text>
-              </Flex>
-            </Flex>
             <Box my='2'>
               <Heading size='xs' mb='2'>
                 Email
