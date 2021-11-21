@@ -21,14 +21,14 @@ export default function Harbour() {
   return (
     <Layout>
       <Flex h='100%' direction='row' bg='gray.800'>
-        <Flex direction='column' w='220px' h='100%' bg='gray.700' p='2'>
+        <Flex direction='column' minW='220px' w='220px' h='100%' bg='gray.700' p='2'>
           <Heading mb='2' size='sm'>
             {data?.getHarbour?.name}
           </Heading>
           <CreateChannel harbourId={harbourId} refetch={refetch} />
           <ChannelList harbourId={harbourId} channels={data?.getHarbour?.channels} />
         </Flex>
-        <TextChannel id={channelId} />
+        {channelId && <TextChannel id={channelId} />}
       </Flex>
     </Layout>
   )

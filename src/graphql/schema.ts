@@ -55,3 +55,27 @@ export const CREATE_CHANNEL = gql`
     }
   }
 `
+
+export const GET_CHANNEL_MESSAGES = gql`
+  query GetChannelMessages($channel: String!) {
+    getChannelMessages(channel: $channel) {
+      _id
+      content
+      updatedAt
+      createdAt
+      user {
+        _id
+        image
+        username
+      }
+    }
+  }
+`
+
+export const CREATE_MESSAGE = gql`
+  mutation CreateMessage($input: CreateMessageInput!) {
+    createMessage(input: $input) {
+      _id
+    }
+  }
+`

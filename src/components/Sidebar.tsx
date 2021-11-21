@@ -23,7 +23,7 @@ export default function Sidebar(): JSX.Element {
             icon={<IoHomeOutline size='20px' />}
           />
         </Link>
-        <Flex>
+        <VStack spacing={2} direction='column' overflow='auto'>
           {data?.getHarbours?.map(harbour => {
             return (
               <Link key={harbour._id} as={RouterDomLink} to={`/harbours/${harbour._id}`}>
@@ -31,7 +31,7 @@ export default function Sidebar(): JSX.Element {
               </Link>
             )
           })}
-        </Flex>
+        </VStack>
       </Flex>
       <VStack spacing='5px'>
         <CreateHarbour refetch={refetch} />
