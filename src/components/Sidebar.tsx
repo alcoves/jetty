@@ -8,7 +8,6 @@ import { IoHomeOutline, IoSettingsOutline } from 'react-icons/io5'
 
 export default function Sidebar(): JSX.Element {
   const { loading, error, data, refetch } = useQuery(GET_HARBOURS)
-  console.log(error)
 
   return (
     <Flex justify='space-between' direction='column' width='80px' bg='gray.900' px='10px' pb='10px'>

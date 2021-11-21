@@ -4,10 +4,13 @@ import { useParams } from 'react-router-dom'
 import { useLazyQuery } from '@apollo/client'
 import { Flex, Heading } from '@chakra-ui/react'
 import { GET_HARBOUR } from '../../graphql/schema'
+import CreateChannel from './CreateChannel'
+import TextChannel from './TextChannel'
+import ChannelList from './ChannelList'
 
 export default function Harbour() {
-  const { harbourId } = useParams()
-  const [executeQuery, { data, loading, error }] = useLazyQuery(GET_HARBOUR)
+  const { harbourId, channelId } = useParams()
+  const [executeQuery, { data, loading, error, refetch }] = useLazyQuery(GET_HARBOUR)
 
   useEffect(() => {
     if (harbourId) {
@@ -18,9 +21,14 @@ export default function Harbour() {
   return (
     <Layout>
       <Flex h='100%' direction='row' bg='gray.800'>
-        <Flex w='220px' h='100%' bg='gray.700' p='2'>
-          <Heading size='sm'>{data?.getHarbour?.name}</Heading>
+        <Flex direction='column' w='220px' h='100%' bg='gray.700' p='2'>
+          <Heading mb='2' size='sm'>
+            {data?.getHarbour?.name}
+          </Heading>
+          <CreateChannel harbourId={harbourId} refetch={refetch} />
+          <ChannelList harbourId={harbourId} channels={data?.getHarbour?.channels} />
         </Flex>
+        <TextChannel id={channelId} />
       </Flex>
     </Layout>
   )

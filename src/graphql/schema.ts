@@ -22,6 +22,10 @@ export const GET_HARBOUR = gql`
       _id
       name
       image
+      channels {
+        _id
+        name
+      }
     }
   }
 `
@@ -39,6 +43,14 @@ export const GET_HARBOURS = gql`
 export const CREATE_HARBOUR = gql`
   mutation CreateHarbour($input: CreateHarbourInput) {
     createHarbour(input: $input) {
+      _id
+    }
+  }
+`
+
+export const CREATE_CHANNEL = gql`
+  mutation CreateChannel($input: CreateChannelInput) {
+    createChannel(input: $input) {
       _id
     }
   }
