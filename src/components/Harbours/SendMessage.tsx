@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { Box, Input } from '@chakra-ui/react'
 import { CREATE_MESSAGE } from '../../graphql/schema'
@@ -10,6 +10,19 @@ export default function SendMessage({ channelId }: { channelId: string }) {
     mutateFunction,
     { data: addedMessageData, loading: sendingMessageLoading, error: errorSendingMessage },
   ] = useMutation(CREATE_MESSAGE)
+
+  useEffect(() => {
+    // setInterval(() => {
+    //   mutateFunction({
+    //     variables: {
+    //       input: {
+    //         content: (Math.random() + 1).toString(36).substring(2),
+    //         channel: channelId,
+    //       },
+    //     },
+    //   })
+    // }, 100)
+  }, [])
 
   async function submitMessage() {
     await mutateFunction({

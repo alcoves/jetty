@@ -26,7 +26,7 @@ export default function Sidebar(): JSX.Element {
         <VStack spacing={2} direction='column' overflow='auto'>
           {data?.getHarbours?.map(harbour => {
             return (
-              <Link key={harbour._id} as={RouterDomLink} to={`/harbours/${harbour._id}`}>
+              <Link key={harbour.id} as={RouterDomLink} to={`/harbours/${harbour.id}`}>
                 <Avatar src={harbour.image} name={harbour.name[0]} />
               </Link>
             )

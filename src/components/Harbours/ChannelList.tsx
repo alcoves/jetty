@@ -4,7 +4,7 @@ import { Flex, Text, VStack } from '@chakra-ui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 interface Channel {
-  _id: string
+  id: string
   name: string
 }
 
@@ -30,10 +30,10 @@ export default function ChannelList({
             align='center'
             cursor='pointer'
             color='gray.300'
-            key={channel._id}
+            key={channel.id}
             _hover={{ bg: 'gray.600' }}
-            bg={channelId === channel._id ? 'gray.600' : 'transparent'}
-            onClick={() => navigate(`/harbours/${harbourId}/channels/${channel._id}`)}
+            bg={channelId === channel.id ? 'gray.600' : 'transparent'}
+            onClick={() => navigate(`/harbours/${harbourId}/channels/${channel.id}`)}
           >
             <IoChatbubbles size='15px' />
             <Text fontWeight={500} fontSize='.9rem' ml='3'>

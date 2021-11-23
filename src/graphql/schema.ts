@@ -17,13 +17,13 @@ export const LOGIN = gql`
 `
 
 export const GET_HARBOUR = gql`
-  query GetHarbour($_id: String!) {
-    getHarbour(_id: $_id) {
-      _id
+  query GetHarbour($id: String!) {
+    getHarbour(id: $id) {
+      id
       name
       image
       channels {
-        _id
+        id
         name
       }
     }
@@ -33,7 +33,7 @@ export const GET_HARBOUR = gql`
 export const GET_HARBOURS = gql`
   query GetHarbours {
     getHarbours {
-      _id
+      id
       name
       image
     }
@@ -43,7 +43,7 @@ export const GET_HARBOURS = gql`
 export const CREATE_HARBOUR = gql`
   mutation CreateHarbour($input: CreateHarbourInput) {
     createHarbour(input: $input) {
-      _id
+      id
     }
   }
 `
@@ -51,7 +51,7 @@ export const CREATE_HARBOUR = gql`
 export const CREATE_CHANNEL = gql`
   mutation CreateChannel($input: CreateChannelInput) {
     createChannel(input: $input) {
-      _id
+      id
     }
   }
 `
@@ -59,12 +59,12 @@ export const CREATE_CHANNEL = gql`
 export const GET_CHANNEL_MESSAGES = gql`
   query GetChannelMessages($input: GetChannelInput!) {
     getChannelMessages(input: $input) {
-      _id
+      id
       content
       updatedAt
       createdAt
       user {
-        _id
+        id
         image
         username
       }
@@ -75,7 +75,7 @@ export const GET_CHANNEL_MESSAGES = gql`
 export const CREATE_MESSAGE = gql`
   mutation CreateMessage($input: CreateMessageInput!) {
     createMessage(input: $input) {
-      _id
+      id
     }
   }
 `
@@ -83,10 +83,10 @@ export const CREATE_MESSAGE = gql`
 export const CHANNEL_MESSAGES_SUBSCRIPTION = gql`
   subscription ChannelMessages($channelId: String!) {
     channelMessages(channelId: $channelId) {
-      _id
+      id
       content
       user {
-        _id
+        id
         image
         username
       }

@@ -8,11 +8,12 @@ export default function TextChannel({ id }: { id: string }) {
   const [messages, setMessages] = useState([])
 
   const {
-    refetch,
+    fetchMore,
     data: getChannelMessagesData,
     error: getChannelMessagesError,
     loading: getChannelMessagesLoading,
   } = useQuery(GET_CHANNEL_MESSAGES, {
+    notifyOnNetworkStatusChange: true,
     variables: { input: { channel: id, skip: 0 } },
   })
 
@@ -24,12 +25,25 @@ export default function TextChannel({ id }: { id: string }) {
   )
 
   useEffect(() => {
+    console.log(
+      'on more',
+      getChannelMessagesData,
+      getChannelMessagesError,
+      getChannelMessagesLoading
+    )
     if (getChannelMessagesData && !getChannelMessagesError && !getChannelMessagesLoading) {
-      setMessages(getChannelMessagesData.getChannelMessages)
+      if (!messages.length) {
+        console.log('Adding initial messages')
+        setMessages(getChannelMessagesData.getChannelMessages)
+      } else {
+        console.log('Adding paginated messages')
+        setMessages(prevState => [getChannelMessagesData.getChannelMessages, ...prevState])
+      }
     }
   }, [getChannelMessagesData, getChannelMessagesError, getChannelMessagesLoading])
 
   useEffect(() => {
+    console.log('on wss')
     if (channelSubData) {
       setMessages(prevState => [channelSubData.channelMessages, ...prevState])
     }
@@ -40,8 +54,12 @@ export default function TextChannel({ id }: { id: string }) {
     const offset = e.target.scrollTop * -1
 
     if (height - offset === 1) {
-      refetch()
-      console.log('top of page reached')
+      console.log('top of page reached', messages.length)
+      fetchMore({
+        variables: {
+          skip: messages.length,
+        },
+      })
     }
   }
 
@@ -50,7 +68,7 @@ export default function TextChannel({ id }: { id: string }) {
       <Flex overflow='auto' direction='column-reverse' onScroll={handleScroll}>
         {messages?.map(message => {
           return (
-            <Flex key={message._id} p='2'>
+            <Flex key={message.id} p='2'>
               <Avatar size='sm' name={message?.user?.username} mr='15px' />
               <Flex direction='column'>
                 <Flex>

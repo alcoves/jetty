@@ -14,7 +14,7 @@ export default function Harbour() {
 
   useEffect(() => {
     if (harbourId) {
-      executeQuery({ variables: { _id: harbourId } })
+      executeQuery({ variables: { id: harbourId } })
     }
   }, [harbourId])
 
