@@ -25,19 +25,13 @@ export default function TextChannel({ id }: { id: string }) {
   )
 
   useEffect(() => {
-    console.log(
-      'on more',
-      getChannelMessagesData,
-      getChannelMessagesError,
-      getChannelMessagesLoading
-    )
     if (getChannelMessagesData && !getChannelMessagesError && !getChannelMessagesLoading) {
       if (!messages.length) {
         console.log('Adding initial messages')
         setMessages(getChannelMessagesData.getChannelMessages)
       } else {
         console.log('Adding paginated messages')
-        setMessages(prevState => [getChannelMessagesData.getChannelMessages, ...prevState])
+        setMessages(prevState => [...getChannelMessagesData.getChannelMessages, ...prevState])
       }
     }
   }, [getChannelMessagesData, getChannelMessagesError, getChannelMessagesLoading])
@@ -45,7 +39,7 @@ export default function TextChannel({ id }: { id: string }) {
   useEffect(() => {
     console.log('on wss')
     if (channelSubData) {
-      setMessages(prevState => [channelSubData.channelMessages, ...prevState])
+      setMessages(prevState => [...channelSubData.channelMessages, ...prevState])
     }
   }, [channelSubData, channelSubLoading])
 
