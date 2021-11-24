@@ -4,22 +4,18 @@ import ReactDOM from 'react-dom'
 import apolloClient from './graphql/client'
 import { ApolloProvider } from '@apollo/client'
 import { ChakraProvider } from '@chakra-ui/react'
-// import { socket, SocketContext } from './contexts/socket'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 
-import Home from './components/Home'
-// import Room from './components/Room'
-import Login from './components/Login'
-import Register from './components/Register'
-import Settings from './components/Settings'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import HarbourHome from './pages/HarbourHome'
+import HarbourChannel from './pages/HarbourChannel'
 import PrivateRoute from './components/PrivateRoute'
-import Harbour from './components/Harbours/Harbour'
 
 function Main() {
-  // const value = useMemo(() => ({ socket }), [socket])
   return (
     <ApolloProvider client={apolloClient}>
-      {/* <SocketContext.Provider value={value}> */}
       <ChakraProvider theme={theme}>
         <HashRouter>
           <Routes>
@@ -34,18 +30,10 @@ function Main() {
               }
             />
             <Route
-              path='/settings'
-              element={
-                <PrivateRoute>
-                  <Settings />
-                </PrivateRoute>
-              }
-            />
-            <Route
               path='/harbours/:harbourId'
               element={
                 <PrivateRoute>
-                  <Harbour />
+                  <HarbourHome />
                 </PrivateRoute>
               }
             />
@@ -53,18 +41,10 @@ function Main() {
               path='/harbours/:harbourId/channels/:channelId'
               element={
                 <PrivateRoute>
-                  <Harbour />
+                  <HarbourChannel />
                 </PrivateRoute>
               }
             />
-            {/* <Route
-              path='/rooms/:roomId'
-              element={
-                <PrivateRoute>
-                  <Room />
-                </PrivateRoute>
-              }
-            /> */}
             <Route
               path='*'
               element={
@@ -76,7 +56,6 @@ function Main() {
           </Routes>
         </HashRouter>
       </ChakraProvider>
-      {/* </SocketContext.Provider> */}
     </ApolloProvider>
   )
 }

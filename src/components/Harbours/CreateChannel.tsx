@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -36,16 +35,19 @@ export default function CreateChannel({
     }
   }, [data])
 
+  if (!harbourId) return null
+
   return (
     <Box>
-      <IconButton
-        w='60px'
-        h='30px'
+      <Button
+        w='100%'
+        size='sm'
         onClick={onOpen}
-        aria-label='create-harbour'
-        icon={<IoAddOutline size='20px' />}
-      />
-
+        aria-label='create-channel'
+        leftIcon={<IoAddOutline size='25px' />}
+      >
+        Channel
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

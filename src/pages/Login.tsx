@@ -1,4 +1,4 @@
-import TitleBar from './TitleBar'
+import TitleBar from '../components/TitleBar'
 import useUser from '../hooks/useUser'
 import { LOGIN } from '../graphql/schema'
 import { useMutation } from '@apollo/client'

@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -18,8 +17,10 @@ import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { IoAddOutline } from 'react-icons/io5'
 import { CREATE_HARBOUR } from '../graphql/schema'
+import { useNavigate } from 'react-router-dom'
 
 export default function CreateHarbour({ refetch }: { refetch: () => void }): JSX.Element {
+  const navigate = useNavigate()
   const { user, authenticated } = useUser()
   const [name, setName] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -37,18 +38,22 @@ export default function CreateHarbour({ refetch }: { refetch: () => void }): JSX
     if (data) {
       onClose()
       refetch()
+      // navigate(`/harbours/${data.createHarbour.id}`)
     }
   }, [data])
 
   return (
-    <Box>
-      <IconButton
-        w='60px'
-        h='30px'
+    <Box w='100%' p='10px'>
+      <Button
+        w='100%'
+        variant='solid'
         onClick={onOpen}
+        colorScheme='teal'
         aria-label='create-harbour'
-        icon={<IoAddOutline size='20px' />}
-      />
+        leftIcon={<IoAddOutline size='20px' />}
+      >
+        Create Harbour
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -60,6 +65,7 @@ export default function CreateHarbour({ refetch }: { refetch: () => void }): JSX
             {error && <Text color='red.500'>{error.message}</Text>}
             <Input
               mt='4'
+              autoFocus
               type='text'
               variant='filled'
               defaultValue={name}
