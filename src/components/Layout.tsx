@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: any }): JSX.Element {
       <TitleBar />
       <Flex h='calc(100vh - 20px)'>
         <Sidebar />
-        <Box overflow='auto' w='100%' bg='gray.900'>
+        <Box bg='gray.900' w='100%'>
           {children}
         </Box>
       </Flex>

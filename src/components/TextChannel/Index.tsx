@@ -58,8 +58,8 @@ export default function TextChannel({ id }: { id: string }) {
   }
 
   return (
-    <Flex direction='column' justify='end' w='100%' p='15px'>
-      <Flex overflow='auto' direction='column-reverse' onScroll={handleScroll}>
+    <Flex overflowY='auto' direction='column' justify='end' w='100%' h='100%'>
+      <Flex overflowY='auto' direction='column-reverse' w='100%'>
         {messages?.map(message => {
           return (
             <Flex key={message.id} p='2'>

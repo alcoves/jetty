@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useLazyQuery } from '@apollo/client'
 import { Flex } from '@chakra-ui/react'
 import CreateChannel from '../Harbours/CreateChannel'
-import ChannelList from './ChannelList'
+import ChannelList from '../Harbours/ChannelList'
 import { GET_HARBOUR } from '../../graphql/schema'
 import Chooser from './Chooser'
 import Settings from './Settings'
@@ -21,7 +21,6 @@ export default function Sidebar() {
   return (
     <Flex
       p='2'
-      minH='100%'
       h='100%'
       w='220px'
       minW='220px'
