@@ -57,7 +57,7 @@ export const CREATE_CHANNEL = gql`
 `
 
 export const GET_CHANNEL_MESSAGES = gql`
-  query GetChannelMessages($input: GetChannelInput!) {
+  query GetChannelMessages($input: GetChannelMessagesInput!) {
     getChannelMessages(input: $input) {
       id
       content

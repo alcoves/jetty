@@ -45,7 +45,25 @@ const splitLink = split(
 
 const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          getChannelMessages: {
+            // Don't cache separate results based on
+            // any of this field's arguments.
+            keyArgs: ['input', ['channelId']],
+
+            // Concatenate the incoming list items with
+            // the existing list items.
+            merge(existing = [], incoming) {
+              return [...existing, ...incoming]
+            },
+          },
+        },
+      },
+    },
+  }),
 })
 
 export default client

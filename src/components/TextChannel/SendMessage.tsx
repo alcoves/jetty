@@ -6,23 +6,7 @@ import { CREATE_MESSAGE } from '../../graphql/schema'
 export default function SendMessage({ channelId }: { channelId: string }) {
   const inputRef = useRef(null)
   const [content, setContent] = useState('')
-  const [
-    mutateFunction,
-    { data: addedMessageData, loading: sendingMessageLoading, error: errorSendingMessage },
-  ] = useMutation(CREATE_MESSAGE)
-
-  useEffect(() => {
-    // setInterval(() => {
-    //   mutateFunction({
-    //     variables: {
-    //       input: {
-    //         content: (Math.random() + 1).toString(36).substring(2),
-    //         channel: channelId,
-    //       },
-    //     },
-    //   })
-    // }, 100)
-  }, [])
+  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_MESSAGE)
 
   async function submitMessage() {
     await mutateFunction({

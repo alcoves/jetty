@@ -1,81 +1,59 @@
 import SendMessage from './SendMessage'
+import ChatMessage from '../ChatMessage'
+import { Flex } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useQuery, useSubscription } from '@apollo/client'
-import { Avatar, Flex, Text } from '@chakra-ui/react'
 import { GET_CHANNEL_MESSAGES, CHANNEL_MESSAGES_SUBSCRIPTION } from '../../graphql/schema'
 
 export default function TextChannel({ id }: { id: string }) {
-  const [messages, setMessages] = useState([])
+  const [wsMessages, setWsMessages] = useState([])
 
-  const {
-    fetchMore,
-    data: getChannelMessagesData,
-    error: getChannelMessagesError,
-    loading: getChannelMessagesLoading,
-  } = useQuery(GET_CHANNEL_MESSAGES, {
+  const { fetchMore, data, error, loading } = useQuery(GET_CHANNEL_MESSAGES, {
     notifyOnNetworkStatusChange: true,
-    variables: { input: { channel: id, skip: 0 } },
+    variables: { input: { channelId: id } },
   })
 
-  const { data: channelSubData, loading: channelSubLoading } = useSubscription(
-    CHANNEL_MESSAGES_SUBSCRIPTION,
-    {
-      variables: { channelId: id },
-    }
-  )
-
-  useEffect(() => {
-    if (getChannelMessagesData && !getChannelMessagesError && !getChannelMessagesLoading) {
-      if (!messages.length) {
-        console.log('Adding initial messages')
-        setMessages(getChannelMessagesData.getChannelMessages)
-      } else {
-        console.log('Adding paginated messages')
-        setMessages(prevState => [...getChannelMessagesData.getChannelMessages, ...prevState])
-      }
-    }
-  }, [getChannelMessagesData, getChannelMessagesError, getChannelMessagesLoading])
+  const { data: data2, loading: loading2 } = useSubscription(CHANNEL_MESSAGES_SUBSCRIPTION, {
+    variables: { channelId: id },
+  })
 
   useEffect(() => {
     console.log('on wss')
-    if (channelSubData) {
-      setMessages(prevState => [...channelSubData.channelMessages, ...prevState])
+    if (data2) {
+      setWsMessages(prevState => [...data2.channelMessages, ...prevState])
     }
-  }, [channelSubData, channelSubLoading])
+  }, [data2, loading2])
 
   function handleScroll(e) {
     const height = e.target.scrollHeight - e.target.clientHeight
     const offset = e.target.scrollTop * -1
 
-    if (height - offset === 1) {
-      console.log('top of page reached', messages.length)
-      fetchMore({
-        variables: {
-          skip: messages.length,
-        },
-      })
+    if (height - offset <= 1) {
+      // @ts-ignore
+      const fiterDate = data.getChannelMessages[data.getChannelMessages.length - 1].createdAt
+      console.log('top of page reached', data?.getChannelMessages?.length, parseInt(fiterDate))
+
+      if (!loading && !error) {
+        fetchMore({
+          variables: {
+            input: {
+              channelId: id,
+              before: parseInt(fiterDate),
+            },
+          },
+        })
+      }
     }
   }
 
   return (
     <Flex overflowY='auto' direction='column' justify='end' w='100%' h='100%'>
-      <Flex overflowY='auto' direction='column-reverse' w='100%'>
-        {messages?.map(message => {
-          return (
-            <Flex key={message.id} p='2'>
-              <Avatar size='sm' name={message?.user?.username} mr='15px' />
-              <Flex direction='column'>
-                <Flex>
-                  <Text color='gray.400' fontWeight={400} fontSize='.8rem'>
-                    {message?.user?.username}
-                  </Text>
-                </Flex>
-                <Text fontWeight={500} fontSize='.9rem'>
-                  {message.content}
-                </Text>
-              </Flex>
-            </Flex>
-          )
+      <Flex onScroll={handleScroll} overflowY='auto' direction='column-reverse' w='100%'>
+        {wsMessages?.map(message => {
+          return <ChatMessage key={message.id} message={message} />
+        })}
+        {data?.getChannelMessages?.map(message => {
+          return <ChatMessage key={message.id} message={message} />
         })}
       </Flex>
       <SendMessage channelId={id} />
