@@ -6,7 +6,7 @@ import CreateChannel from '../Harbours/CreateChannel'
 import ChannelList from '../Harbours/ChannelList'
 import { GET_HARBOUR } from '../../graphql/schema'
 import Chooser from './Chooser'
-import Settings from './Settings'
+import Settings from '../Settings/Index'
 
 export default function Sidebar() {
   const { harbourId } = useParams()
