@@ -1,5 +1,5 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
 import update from 'update-electron-app'
+import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 
 try {
   update()
@@ -81,4 +81,23 @@ ipcMain.on('titleBarAction', (_, arg) => {
 
 ipcMain.on('getApplicationVersion', event => {
   event.sender.send('getApplicationVersion', { version: app.getVersion() })
+})
+
+ipcMain.on('selectAvatarFile', event => {
+  dialog
+    .showOpenDialog({
+      filters: [
+        {
+          name: 'Images',
+          extensions: ['png', 'jpg', 'jpeg', 'webp'],
+        },
+      ],
+      properties: ['openFile'],
+    })
+    .then(result => {
+      event.sender.send('selectAvatarFile', { result })
+    })
+    .catch(error => {
+      console.error(error)
+    })
 })
