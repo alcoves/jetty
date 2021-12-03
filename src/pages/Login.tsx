@@ -1,8 +1,7 @@
-import TitleBar from '../components/TitleBar'
+import axios from 'axios'
 import useUser from '../hooks/useUser'
-import { LOGIN } from '../graphql/schema'
-import { useMutation } from '@apollo/client'
-import React, { useState, useEffect } from 'react'
+import TitleBar from '../components/TitleBar'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Text, Box, Flex, Input, Heading, Button } from '@chakra-ui/react'
 
@@ -12,12 +11,18 @@ export default function Login(): JSX.Element {
   const [email, setEmail] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [password, setPassword] = useState('')
-  const [mutateFunction, { data, loading, error }] = useMutation(LOGIN)
 
-  useEffect(() => {
-    if (error) setErrorMsg(error.message)
-    if (data) login(data.login.accessToken)
-  }, [data, error])
+  async function handleLogin() {
+    try {
+      const res = await axios.post('http://localhost:4000/login', {
+        email,
+        password,
+      })
+      login(res.data.accessToken)
+    } catch (error) {
+      setErrorMsg(error.message)
+    }
+  }
 
   if (authenticated) {
     navigate('/')
@@ -49,31 +54,16 @@ export default function Login(): JSX.Element {
             placeholder='password'
             onKeyPress={e => {
               if (e.key === 'Enter') {
-                mutateFunction({
-                  variables: {
-                    input: {
-                      email,
-                      password,
-                    },
-                  },
-                })
+                handleLogin()
               }
             }}
             onChange={e => setPassword(e.target.value)}
           />
           <Button
             mt='4'
-            isLoading={loading}
             _hover={{ bg: 'teal.500' }}
             onClick={() => {
-              mutateFunction({
-                variables: {
-                  input: {
-                    email,
-                    password,
-                  },
-                },
-              })
+              handleLogin()
             }}
           >
             Login

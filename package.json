@@ -106,6 +106,7 @@
     "simple-peer": "^9.11.0",
     "socket.io-client": "^4.3.2",
     "subscriptions-transport-ws": "^0.11.0",
+    "swr": "^1.1.0",
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
@@ -115,6 +116,7 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "@electron-forge/plugin-webpack": "6.0.0-beta.61",
     "@electron-forge/publisher-github": "^6.0.0-beta.61",
+    "@types/axios": "^0.14.0",
     "@types/js-cookie": "^3.0.1",
     "@types/react": "^17.0.35",
     "@types/react-dom": "^17.0.11",

@@ -38,7 +38,7 @@ export default function Settings() {
         Settings
       </Button>
 
-      <Modal size='full' isOpen={true} onClose={onClose}>
+      <Modal size='full' isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Settings</ModalHeader>
