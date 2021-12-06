@@ -9,7 +9,7 @@ export default function HarbourChannel(): JSX.Element {
   return (
     <Layout>
       <Flex p='4' h='100%' justify='start' direction='column' align='start'>
-        {channelId && <TextChannel key={channelId} id={channelId} />}
+        {/* {channelId && <TextChannel key={channelId} id={channelId} />} */}
       </Flex>
     </Layout>
   )

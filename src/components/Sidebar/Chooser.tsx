@@ -1,3 +1,4 @@
+import useSWR from 'swr'
 import React, { useEffect, useState } from 'react'
 import {
   Button,
@@ -11,28 +12,29 @@ import {
   MenuButton,
   MenuDivider,
 } from '@chakra-ui/react'
-import { useQuery } from '@apollo/client'
-import { GET_HARBOURS } from '../../graphql/schema'
-import { useParams, Link as RouterDomLink } from 'react-router-dom'
+import { fetcher } from '../../config/fetcher'
 import CreateHarbour from '../CreateHarbour'
+import { useParams, Link as RouterDomLink } from 'react-router-dom'
 
 export default function Chooser() {
   const { harbourId } = useParams()
-  const { data, loading, refetch } = useQuery(GET_HARBOURS)
   const [headerText, setSelectedHarbour] = useState('Home')
+  const { data, error } = useSWR(`http://localhost:4000/harbours`, fetcher)
 
   useEffect(() => {
-    if (harbourId && data?.getHarbours.length) {
-      const currentHarbour = data?.getHarbours.filter(harbour => {
+    if (harbourId && data?.payload?.harbours?.length) {
+      const currentHarbour = data?.payload?.harbours.filter(harbour => {
         return harbour.id === harbourId
       })
+
       if (currentHarbour?.length) {
         setSelectedHarbour(currentHarbour[0].name)
       }
     }
   }, [harbourId, data])
 
-  if (loading) return null
+  if (!data) return null
+  if (error) return <div>Error</div>
 
   return (
     <Flex>
@@ -43,12 +45,12 @@ export default function Chooser() {
           </Heading>
         </MenuButton>
         <MenuList>
-          <CreateHarbour refetch={refetch} />
+          {/* <CreateHarbour refetch={refetch} /> */}
           <Link as={RouterDomLink} to={`/`}>
             <MenuItem minH='48px'>Home</MenuItem>
           </Link>
           <MenuDivider />
-          {data?.getHarbours?.map(harbour => {
+          {data?.payload?.harbours?.map(harbour => {
             return (
               <Link key={harbour.id} as={RouterDomLink} to={`/harbours/${harbour.id}`}>
                 <MenuItem minH='48px'>

@@ -1,26 +1,23 @@
+import useSWR from 'swr'
 import React from 'react'
+import { fetcher } from '../../config/fetcher'
 import { IoChatbubbles } from 'react-icons/io5'
 import { Button, Text, VStack } from '@chakra-ui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-interface Channel {
-  id: string
-  name: string
-}
-
-export default function ChannelList({
-  harbourId,
-  channels,
-}: {
-  harbourId: string
-  channels: Channel[]
-}) {
+export default function ChannelList() {
   const navigate = useNavigate()
-  const { channelId } = useParams()
+  const { harbourId, channelId } = useParams()
+  const { data, error } = useSWR(
+    harbourId ? `http://localhost:4000/harbours/${harbourId}/channels` : null,
+    fetcher
+  )
+
+  if (error && !data) return null
 
   return (
     <VStack spacing={1} direction='column' w='100%' mt='2'>
-      {channels?.map(channel => {
+      {data?.payload?.channels?.map(channel => {
         return (
           <Button
             h='30px'
