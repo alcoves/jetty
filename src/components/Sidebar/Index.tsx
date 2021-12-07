@@ -19,7 +19,7 @@ export default function Sidebar() {
     >
       <Flex direction='column'>
         <Chooser />
-        {/* <CreateChannel harbourId={harbourId} /> */}
+        <CreateChannel />
         <ChannelList />
       </Flex>
       <Flex>

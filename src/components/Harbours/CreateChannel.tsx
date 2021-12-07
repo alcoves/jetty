@@ -12,27 +12,23 @@ import {
   Text,
   Input,
 } from '@chakra-ui/react'
+import useLazyRequest from '../../hooks/useLazyRequest'
 import React, { useEffect, useState } from 'react'
-import { useMutation } from '@apollo/client'
 import { IoAddOutline } from 'react-icons/io5'
-import { CREATE_CHANNEL } from '../../graphql/schema'
+import { useParams } from 'react-router-dom'
+import { apiUrl } from '../../config/api'
 
-export default function CreateChannel({
-  harbourId,
-  refetch,
-}: {
-  harbourId: string
-  refetch: () => void
-}): JSX.Element {
+export default function CreateChannel(): JSX.Element {
+  const { harbourId } = useParams()
   const [name, setName] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_CHANNEL)
+  const [createChannel, { data, loading, error }] = useLazyRequest(
+    `${apiUrl}/harbours/${harbourId}/channels`,
+    { method: 'post' }
+  )
 
   useEffect(() => {
-    if (data) {
-      onClose()
-      refetch()
-    }
+    if (data) onClose()
   }, [data])
 
   if (!harbourId) return null
@@ -70,7 +66,7 @@ export default function CreateChannel({
               variant='solid'
               isLoading={loading}
               onClick={() => {
-                mutateFunction({ variables: { input: { name, harbourId } } })
+                createChannel({ name })
               }}
             >
               Create
