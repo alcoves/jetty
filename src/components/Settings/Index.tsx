@@ -21,7 +21,7 @@ import { compact } from '@apollo/client/utilities'
 import Profile from './Profile'
 import useUser from '../../hooks/useUser'
 
-export default function Settings() {
+export default function Settings(): JSX.Element {
   const { user, logout } = useUser()
   const [component, setComponent] = useState('profile')
   const { isOpen, onOpen, onClose } = useDisclosure()

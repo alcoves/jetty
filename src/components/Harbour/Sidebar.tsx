@@ -4,7 +4,7 @@ import ChannelList from './ChannelList'
 import CreateChannel from './CreateChannel'
 import { Flex } from '@chakra-ui/react'
 
-export default function Sidebar() {
+export default function Sidebar(): JSX.Element {
   return (
     <Flex
       p='2'

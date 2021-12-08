@@ -12,29 +12,30 @@ import Login from './pages/Login'
 import NotFound from './pages/404'
 import Harbour from './pages/Harbour'
 import Register from './pages/Register'
+import Layout from './components/Layout'
 import HarbourHome from './components/Harbour/Home'
 import HarbourChannel from './components/Harbour/Channel'
 
-function Main() {
+function Main(): JSX.Element {
   return (
-    <SocketContext.Provider value={socket}>
-      <ApolloProvider client={apolloClient}>
-        <ChakraProvider theme={theme}>
-          <HashRouter>
-            <Routes>
+    <ApolloProvider client={apolloClient}>
+      <ChakraProvider theme={theme}>
+        <HashRouter>
+          <Routes>
+            <Route path='*' element={<NotFound />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='' element={<Layout />}>
               <Route path='/' element={<Home />} />
-              <Route path='*' element={<NotFound />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
               <Route path='/harbours/:harbourId' element={<Harbour />}>
                 <Route path='' element={<HarbourHome />} />
                 <Route path='channels/:channelId' element={<HarbourChannel />} />
               </Route>
-            </Routes>
-          </HashRouter>
-        </ChakraProvider>
-      </ApolloProvider>
-    </SocketContext.Provider>
+            </Route>
+          </Routes>
+        </HashRouter>
+      </ChakraProvider>
+    </ApolloProvider>
   )
 }
 

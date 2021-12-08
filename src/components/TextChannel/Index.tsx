@@ -11,15 +11,13 @@ export default function TextChannel({ id }: { id: string }) {
   const socket = useContext(SocketContext)
 
   useEffect(() => {
-    socket.emit('join', harbourId)
-
     socket.on('heartbeat', () => {
       console.log('heartbeat recieved')
     })
 
-    return () => {
-      socket.disconnect()
-    }
+    // return () => {
+    //   socket.disconnect()
+    // }
   }, [])
 
   const { harbourId, channelId } = useParams()

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 // import { useDropzone } from 'react-dropzone'
 import { Button, Center, Avatar } from '@chakra-ui/react'
 
-export default function AvatarUpload() {
+export default function AvatarUpload(): JSX.Element {
   const { user, loading, authenticated } = useUser()
 
   // const { acceptedFiles, getRootProps, getInputProps } = useDropzone({

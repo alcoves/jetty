@@ -3,7 +3,7 @@ import useUser from '../../hooks/useUser'
 import AvatarUpload from './AvatarUpload'
 import { Flex, Heading } from '@chakra-ui/react'
 
-export default function Profile() {
+export default function Profile(): JSX.Element {
   const { user, loading, authenticated } = useUser()
 
   if (!loading && authenticated) {

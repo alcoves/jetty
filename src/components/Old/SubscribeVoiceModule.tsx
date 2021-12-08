@@ -23,10 +23,10 @@
 //       viewerRef.current.srcObject = e.streams[0]
 
 //       const speechEvents = hark(e.streams[0], { threshold: -60, interval: 20 })
-//       speechEvents.on('speaking', function () {
+//       speechEvents.on('speaking', function (): JSX.Element {
 //         setBorder('solid #48BB78 2px')
 //       })
-//       speechEvents.on('stopped_speaking', function () {
+//       speechEvents.on('stopped_speaking', function (): JSX.Element {
 //         setBorder('')
 //       })
 //     }

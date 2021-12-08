@@ -1,14 +1,30 @@
-import React from 'react'
 import useUser from '../hooks/useUser'
 import useRequest from '../hooks/useRequest'
 import CreateHarbour from './Harbour/CreateHarbour'
-import { Link as RouterDomLink } from 'react-router-dom'
 import { IoHomeOutline } from 'react-icons/io5'
-import { Avatar, Flex, HStack, IconButton, Link } from '@chakra-ui/react'
+import { SocketContext } from '../contexts/socket'
+import { Link as RouterDomLink } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Avatar, Flex, HStack, IconButton, Link, Text } from '@chakra-ui/react'
 
 export default function TopNavBar(): JSX.Element {
   const { user } = useUser()
+  const [latency, setLatency] = useState(0)
+  const socket = useContext(SocketContext)
   const { data } = useRequest('http://localhost:4000/harbours')
+
+  useEffect(() => {
+    let startTime = Date.now()
+
+    setInterval(() => {
+      startTime = Date.now()
+      socket.emit('ping')
+    }, 1000)
+
+    socket.on('pong', () => {
+      setLatency(Date.now() - startTime)
+    })
+  }, [])
 
   return (
     <Flex bg='gray.900' h='50px'>
@@ -26,6 +42,7 @@ export default function TopNavBar(): JSX.Element {
           })}
           <CreateHarbour />
         </HStack>
+        <Text>Latency: {latency}ms</Text>
         <Avatar size='sm' name={user?.username} />
       </Flex>
     </Flex>

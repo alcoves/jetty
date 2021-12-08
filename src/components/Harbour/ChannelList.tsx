@@ -4,7 +4,7 @@ import useRequest from '../../hooks/useRequest'
 import { Button, Text, VStack } from '@chakra-ui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-export default function ChannelList() {
+export default function ChannelList(): JSX.Element {
   const navigate = useNavigate()
   const { harbourId, channelId } = useParams()
   const { data, error } = useRequest(`http://localhost:4000/harbours/${harbourId}/channels`)

@@ -1,4 +1,3 @@
-import Layout from './Layout'
 import useUser from '../hooks/useUser'
 import React, { useEffect, useState } from 'react'
 import { Button, Box, Heading, Input, Spacer, Text } from '@chakra-ui/react'
@@ -15,39 +14,37 @@ export default function Settings(): JSX.Element {
   }, [])
 
   return (
-    <Layout>
-      <Box p='4'>
-        <Heading size='md'>Settings</Heading>
-        <Spacer h='10px' />
-        {!loading && authenticated && (
-          <Box>
-            <Box my='2'>
-              <Heading size='xs' mb='2'>
-                Email
-              </Heading>
-              <Input disabled size='sm' w='300px' variant='filled' defaultValue={user.email} />
-            </Box>
-            <Box my='2'>
-              <Heading size='xs' mb='2'>
-                Username
-              </Heading>
-              <Input disabled size='sm' w='300px' variant='filled' defaultValue={user.username} />
-            </Box>
-            <Box my='2'>
-              <Heading size='xs' mb='2'>
-                User ID
-              </Heading>
-              <Input disabled size='sm' w='300px' variant='filled' defaultValue={user.id} />
-            </Box>
-            <Box my='2'>
-              <Text>Application Version: {appVersion}</Text>
-            </Box>
-            <Button size='sm' bg='red.500' _hover={{ bg: 'red.600' }} onClick={logout}>
-              Log out
-            </Button>
+    <Box p='4'>
+      <Heading size='md'>Settings</Heading>
+      <Spacer h='10px' />
+      {!loading && authenticated && (
+        <Box>
+          <Box my='2'>
+            <Heading size='xs' mb='2'>
+              Email
+            </Heading>
+            <Input disabled size='sm' w='300px' variant='filled' defaultValue={user.email} />
           </Box>
-        )}
-      </Box>
-    </Layout>
+          <Box my='2'>
+            <Heading size='xs' mb='2'>
+              Username
+            </Heading>
+            <Input disabled size='sm' w='300px' variant='filled' defaultValue={user.username} />
+          </Box>
+          <Box my='2'>
+            <Heading size='xs' mb='2'>
+              User ID
+            </Heading>
+            <Input disabled size='sm' w='300px' variant='filled' defaultValue={user.id} />
+          </Box>
+          <Box my='2'>
+            <Text>Application Version: {appVersion}</Text>
+          </Box>
+          <Button size='sm' bg='red.500' _hover={{ bg: 'red.600' }} onClick={logout}>
+            Log out
+          </Button>
+        </Box>
+      )}
+    </Box>
   )
 }
