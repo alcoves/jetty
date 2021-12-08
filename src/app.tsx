@@ -18,24 +18,26 @@ import HarbourChannel from './components/Harbour/Channel'
 
 function Main(): JSX.Element {
   return (
-    <ApolloProvider client={apolloClient}>
-      <ChakraProvider theme={theme}>
-        <HashRouter>
-          <Routes>
-            <Route path='*' element={<NotFound />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='' element={<Layout />}>
-              <Route path='/' element={<Home />} />
-              <Route path='/harbours/:harbourId' element={<Harbour />}>
-                <Route path='' element={<HarbourHome />} />
-                <Route path='channels/:channelId' element={<HarbourChannel />} />
+    <SocketContext.Provider value={socket}>
+      <ApolloProvider client={apolloClient}>
+        <ChakraProvider theme={theme}>
+          <HashRouter>
+            <Routes>
+              <Route path='*' element={<NotFound />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='' element={<Layout />}>
+                <Route path='/' element={<Home />} />
+                <Route path='/harbours/:harbourId' element={<Harbour />}>
+                  <Route path='' element={<HarbourHome />} />
+                  <Route path='channels/:channelId' element={<HarbourChannel />} />
+                </Route>
               </Route>
-            </Route>
-          </Routes>
-        </HashRouter>
-      </ChakraProvider>
-    </ApolloProvider>
+            </Routes>
+          </HashRouter>
+        </ChakraProvider>
+      </ApolloProvider>
+    </SocketContext.Provider>
   )
 }
 

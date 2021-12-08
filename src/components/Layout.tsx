@@ -1,24 +1,25 @@
-import React, { useEffect } from 'react'
+import Cookies from 'js-cookie'
 import TitleBar from './TitleBar'
 import TopNavBar from './TopNavBar'
-import { Flex, Box } from '@chakra-ui/react'
-import { SocketContext, socket } from '../contexts/socket'
 import { Outlet } from 'react-router-dom'
+import { Flex, Box } from '@chakra-ui/react'
+import { SocketContext } from '../contexts/socket'
+import React, { useContext, useEffect } from 'react'
 
 export default function Layout(): JSX.Element {
+  const socket = useContext(SocketContext)
+
   useEffect(() => {
-    console.log('Layout mounted')
+    socket.emit('join', Cookies.get('token'))
   }, [])
 
   return (
-    <SocketContext.Provider value={socket}>
-      <Box>
-        <TitleBar />
-        <TopNavBar />
-        <Flex h='calc(100vh - 70px)'>
-          <Outlet />
-        </Flex>
-      </Box>
-    </SocketContext.Provider>
+    <Box>
+      <TitleBar />
+      <TopNavBar />
+      <Flex h='calc(100vh - 70px)'>
+        <Outlet />
+      </Flex>
+    </Box>
   )
 }
