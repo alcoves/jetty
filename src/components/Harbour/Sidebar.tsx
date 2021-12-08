@@ -1,8 +1,7 @@
 import React from 'react'
-import Chooser from './Chooser'
 import Settings from '../Settings/Index'
-import ChannelList from '../Harbours/ChannelList'
-import CreateChannel from '../Harbours/CreateChannel'
+import ChannelList from './ChannelList'
+import CreateChannel from './CreateChannel'
 import { Flex } from '@chakra-ui/react'
 
 export default function Sidebar() {
@@ -12,13 +11,12 @@ export default function Sidebar() {
       h='100%'
       w='220px'
       minW='220px'
-      bg='gray.800'
+      bg='gray.700'
       direction='column'
       alignItems='stretch'
       justify='space-between'
     >
       <Flex direction='column'>
-        <Chooser />
         <CreateChannel />
         <ChannelList />
       </Flex>

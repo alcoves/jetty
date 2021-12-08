@@ -1,17 +1,13 @@
-import useSWR from 'swr'
 import React from 'react'
-import { fetcher } from '../../config/fetcher'
 import { IoChatbubbles } from 'react-icons/io5'
+import useRequest from '../../hooks/useRequest'
 import { Button, Text, VStack } from '@chakra-ui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 export default function ChannelList() {
   const navigate = useNavigate()
   const { harbourId, channelId } = useParams()
-  const { data, error } = useSWR(
-    harbourId ? `http://localhost:4000/harbours/${harbourId}/channels` : null,
-    fetcher
-  )
+  const { data, error } = useRequest(`http://localhost:4000/harbours/${harbourId}/channels`)
 
   if (error && !data) return null
 

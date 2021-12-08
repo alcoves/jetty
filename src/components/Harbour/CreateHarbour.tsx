@@ -11,20 +11,18 @@ import {
   useDisclosure,
   Text,
   Input,
+  IconButton,
 } from '@chakra-ui/react'
-import useUser from '../hooks/useUser'
+import useUser from '../../hooks/useUser'
 import React, { useEffect, useState } from 'react'
-import { useMutation } from '@apollo/client'
-import { IoAddOutline } from 'react-icons/io5'
-import { CREATE_HARBOUR } from '../graphql/schema'
+import { IoAdd, IoAddOutline, IoAddSharp } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 
-export default function CreateHarbour({ refetch }: { refetch: () => void }): JSX.Element {
+export default function CreateHarbour(): JSX.Element {
   const navigate = useNavigate()
   const { user, authenticated } = useUser()
   const [name, setName] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_HARBOUR)
 
   useEffect(() => {
     if (authenticated) {
@@ -34,26 +32,23 @@ export default function CreateHarbour({ refetch }: { refetch: () => void }): JSX
     }
   }, [authenticated])
 
-  useEffect(() => {
-    if (data) {
-      onClose()
-      refetch()
-      // navigate(`/harbours/${data.createHarbour.id}`)
-    }
-  }, [data])
+  // useEffect(() => {
+  //   if (data) {
+  //     onClose()
+  //     refetch()
+  //     // navigate(`/harbours/${data.createHarbour.id}`)
+  //   }
+  // }, [data])
 
   return (
-    <Box w='100%' p='10px'>
-      <Button
-        w='100%'
-        variant='solid'
+    <Box>
+      <IconButton
+        size='sm'
         onClick={onOpen}
-        colorScheme='teal'
+        borderRadius='50%'
         aria-label='create-harbour'
-        leftIcon={<IoAddOutline size='20px' />}
-      >
-        Create Harbour
-      </Button>
+        icon={<IoAddSharp size='20px' />}
+      />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -62,7 +57,7 @@ export default function CreateHarbour({ refetch }: { refetch: () => void }): JSX
           <ModalCloseButton />
           <ModalBody>
             <Text> A harbour a place your you and your friends.</Text>
-            {error && <Text color='red.500'>{error.message}</Text>}
+            {/* {error && <Text color='red.500'>{error.message}</Text>} */}
             <Input
               mt='4'
               autoFocus
@@ -76,10 +71,10 @@ export default function CreateHarbour({ refetch }: { refetch: () => void }): JSX
             <Button
               w='100%'
               variant='solid'
-              isLoading={loading}
-              onClick={() => {
-                mutateFunction({ variables: { input: { name } } })
-              }}
+              // isLoading={loading}
+              // onClick={() => {
+              //   mutateFunction({ variables: { input: { name } } })
+              // }}
             >
               Create
             </Button>

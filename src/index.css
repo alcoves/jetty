@@ -17,13 +17,11 @@ video {
 }
 
 ::-webkit-scrollbar-track {
-  border-radius: 10px;
   background-color: #151720;
 }
 
 ::-webkit-scrollbar-thumb {
   min-height: 50px;
-  border-radius: 10px;
   background-color: #2d3748;
 }
 
