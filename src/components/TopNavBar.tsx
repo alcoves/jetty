@@ -1,6 +1,6 @@
 import useUser from '../hooks/useUser'
 import useRequest from '../hooks/useRequest'
-import CreateHarbour from './Harbour/CreateHarbour'
+import CreateHarbor from './Harbor/CreateHarbor'
 import { IoHomeOutline } from 'react-icons/io5'
 import { SocketContext } from '../contexts/socket'
 import { Link as RouterDomLink } from 'react-router-dom'
@@ -11,7 +11,7 @@ export default function TopNavBar(): JSX.Element {
   const { user } = useUser()
   const [latency, setLatency] = useState(0)
   const socket = useContext(SocketContext)
-  const { data } = useRequest('http://localhost:4000/harbours')
+  const { data } = useRequest('http://localhost:4000/harbors')
 
   useEffect(() => {
     let startTime = Date.now()
@@ -33,14 +33,14 @@ export default function TopNavBar(): JSX.Element {
           <Link as={RouterDomLink} to={`/`}>
             <IconButton aria-label='home' icon={<IoHomeOutline />} />
           </Link>
-          {data?.payload?.harbours.map(h => {
+          {data?.payload?.harbors.map(h => {
             return (
-              <Link key={h.id} as={RouterDomLink} to={`/harbours/${h.id}`}>
+              <Link key={h.id} as={RouterDomLink} to={`/harbors/${h.id}`}>
                 <Avatar size='sm' name={h.name} />
               </Link>
             )
           })}
-          <CreateHarbour />
+          <CreateHarbor />
         </HStack>
         <Text>Latency: {latency}ms</Text>
         <Avatar size='sm' name={user?.username} />

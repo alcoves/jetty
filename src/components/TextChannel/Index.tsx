@@ -20,8 +20,8 @@ export default function TextChannel({ id }: { id: string }) {
     // }
   }, [])
 
-  const { harbourId, channelId } = useParams()
-  const getMessagesUrl = `http://localhost:4000/harbours/${harbourId}/channels/${channelId}/messages`
+  const { harborId, channelId } = useParams()
+  const getMessagesUrl = `http://localhost:4000/harbors/${harborId}/channels/${channelId}/messages`
   const { data, error } = useSWR(getMessagesUrl, fetcher)
 
   // const [wsMessages, setWsMessages] = useState([])

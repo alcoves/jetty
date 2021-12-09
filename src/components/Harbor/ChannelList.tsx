@@ -6,8 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 export default function ChannelList(): JSX.Element {
   const navigate = useNavigate()
-  const { harbourId, channelId } = useParams()
-  const { data, error } = useRequest(`http://localhost:4000/harbours/${harbourId}/channels`)
+  const { harborId, channelId } = useParams()
+  const { data, error } = useRequest(`http://localhost:4000/harbors/${harborId}/channels`)
 
   if (error && !data) return null
 
@@ -23,7 +23,7 @@ export default function ChannelList(): JSX.Element {
             justifyContent='start'
             leftIcon={<IoChatbubbles size='15px' />}
             variant={channelId === channel.id ? 'solid' : 'ghost'}
-            onClick={() => navigate(`/harbours/${harbourId}/channels/${channel.id}`)}
+            onClick={() => navigate(`/harbors/${harborId}/channels/${channel.id}`)}
           >
             <Text fontWeight={600} fontSize='.9rem'>
               {channel.name}

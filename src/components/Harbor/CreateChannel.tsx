@@ -19,11 +19,11 @@ import { useParams } from 'react-router-dom'
 import { apiUrl } from '../../config/api'
 
 export default function CreateChannel(): JSX.Element {
-  const { harbourId } = useParams()
+  const { harborId } = useParams()
   const [name, setName] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [createChannel, { data, loading, error }] = useLazyRequest(
-    `${apiUrl}/harbours/${harbourId}/channels`,
+    `${apiUrl}/harbors/${harborId}/channels`,
     { method: 'post' }
   )
 
@@ -31,7 +31,7 @@ export default function CreateChannel(): JSX.Element {
     if (data) onClose()
   }, [data])
 
-  if (!harbourId) return null
+  if (!harborId) return null
 
   return (
     <Box>

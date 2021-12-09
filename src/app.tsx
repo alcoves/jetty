@@ -10,11 +10,11 @@ import { HashRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import NotFound from './pages/404'
-import Harbour from './pages/Harbour'
+import Harbor from './pages/Harbor'
 import Register from './pages/Register'
 import Layout from './components/Layout'
-import HarbourHome from './components/Harbour/Home'
-import HarbourChannel from './components/Harbour/Channel'
+import HarborHome from './components/Harbor/Home'
+import HarborChannel from './components/Harbor/Channel'
 
 function Main(): JSX.Element {
   return (
@@ -28,9 +28,9 @@ function Main(): JSX.Element {
               <Route path='/register' element={<Register />} />
               <Route path='' element={<Layout />}>
                 <Route path='/' element={<Home />} />
-                <Route path='/harbours/:harbourId' element={<Harbour />}>
-                  <Route path='' element={<HarbourHome />} />
-                  <Route path='channels/:channelId' element={<HarbourChannel />} />
+                <Route path='/harbors/:harborId' element={<Harbor />}>
+                  <Route path='' element={<HarborHome />} />
+                  <Route path='channels/:channelId' element={<HarborChannel />} />
                 </Route>
               </Route>
             </Routes>

@@ -32,7 +32,7 @@ export default function Settings(): JSX.Element {
         size='sm'
         w='100%'
         onClick={onOpen}
-        aria-label='create-harbour'
+        aria-label='create-harbor'
         leftIcon={<IoSettingsOutline size='15px' />}
       >
         Settings

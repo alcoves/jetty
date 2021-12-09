@@ -16,38 +16,6 @@ export const LOGIN = gql`
   }
 `
 
-export const GET_HARBOUR = gql`
-  query GetHarbour($id: String!) {
-    getHarbour(id: $id) {
-      id
-      name
-      image
-      channels {
-        id
-        name
-      }
-    }
-  }
-`
-
-export const GET_HARBOURS = gql`
-  query GetHarbours {
-    getHarbours {
-      id
-      name
-      image
-    }
-  }
-`
-
-export const CREATE_HARBOUR = gql`
-  mutation CreateHarbour($input: CreateHarbourInput) {
-    createHarbour(input: $input) {
-      id
-    }
-  }
-`
-
 export const CREATE_CHANNEL = gql`
   mutation CreateChannel($input: CreateChannelInput) {
     createChannel(input: $input) {

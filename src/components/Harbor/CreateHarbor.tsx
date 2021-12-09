@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react'
 import { IoAdd, IoAddOutline, IoAddSharp } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 
-export default function CreateHarbour(): JSX.Element {
+export default function CreateHarbor(): JSX.Element {
   const navigate = useNavigate()
   const { user, authenticated } = useUser()
   const [name, setName] = useState('')
@@ -27,8 +27,8 @@ export default function CreateHarbour(): JSX.Element {
   useEffect(() => {
     if (authenticated) {
       const parsedUsername = user?.username.charAt(0).toUpperCase() + user?.username.slice(1)
-      const newHarbourPlaceholder = `${parsedUsername}'s Harbour`
-      setName(newHarbourPlaceholder)
+      const newHarborPlaceholder = `${parsedUsername}'s Harbor`
+      setName(newHarborPlaceholder)
     }
   }, [authenticated])
 
@@ -36,7 +36,7 @@ export default function CreateHarbour(): JSX.Element {
   //   if (data) {
   //     onClose()
   //     refetch()
-  //     // navigate(`/harbours/${data.createHarbour.id}`)
+  //     // navigate(`/harbors/${data.createHarbor.id}`)
   //   }
   // }, [data])
 
@@ -46,17 +46,17 @@ export default function CreateHarbour(): JSX.Element {
         size='sm'
         onClick={onOpen}
         borderRadius='50%'
-        aria-label='create-harbour'
+        aria-label='create-harbor'
         icon={<IoAddSharp size='20px' />}
       />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create a harbour</ModalHeader>
+          <ModalHeader>Create a harbor</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text> A harbour a place your you and your friends.</Text>
+            <Text> A harbor a place your you and your friends.</Text>
             {/* {error && <Text color='red.500'>{error.message}</Text>} */}
             <Input
               mt='4'
