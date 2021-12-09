@@ -40,7 +40,7 @@ export default function Settings(): JSX.Element {
           <Box my='2'>
             <Text>Application Version: {appVersion}</Text>
           </Box>
-          <Button size='sm' bg='red.500' _hover={{ bg: 'red.600' }} onClick={logout}>
+          <Button size='sm' bg='brand.red' onClick={logout}>
             Log out
           </Button>
         </Box>

@@ -1,4 +1,4 @@
-import useUser from '../hooks/useUser'
+import Settings from './Settings/Settings'
 import useRequest from '../hooks/useRequest'
 import CreateHarbor from './Harbor/CreateHarbor'
 import { IoHomeOutline } from 'react-icons/io5'
@@ -8,7 +8,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Avatar, Flex, HStack, IconButton, Link, Text } from '@chakra-ui/react'
 
 export default function TopNavBar(): JSX.Element {
-  const { user } = useUser()
   const [latency, setLatency] = useState(0)
   const socket = useContext(SocketContext)
   const { data } = useRequest('http://localhost:4000/harbors')
@@ -36,14 +35,14 @@ export default function TopNavBar(): JSX.Element {
           {data?.payload?.harbors.map(h => {
             return (
               <Link key={h.id} as={RouterDomLink} to={`/harbors/${h.id}`}>
-                <Avatar size='sm' name={h.name} />
+                <Avatar size='sm' name={h.name} src={h.image} />
               </Link>
             )
           })}
           <CreateHarbor />
         </HStack>
         <Text>Latency: {latency}ms</Text>
-        <Avatar size='sm' name={user?.username} />
+        <Settings />
       </Flex>
     </Flex>
   )

@@ -1,5 +1,4 @@
 import React from 'react'
-import Settings from '../Settings/Index'
 import ChannelList from './ChannelList'
 import CreateChannel from './CreateChannel'
 import { Flex } from '@chakra-ui/react'
@@ -20,9 +19,7 @@ export default function Sidebar(): JSX.Element {
         <CreateChannel />
         <ChannelList />
       </Flex>
-      <Flex>
-        <Settings />
-      </Flex>
+      <Flex>Harbor Settings</Flex>
     </Flex>
   )
 }

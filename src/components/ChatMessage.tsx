@@ -4,7 +4,7 @@ import React from 'react'
 export default function ChatMessage({ message }: { message: any }) {
   return (
     <Flex key={message.id} p='2'>
-      <Avatar size='sm' name={message?.user?.username} mr='15px' />
+      <Avatar size='sm' name={message?.user?.username} src={message?.user?.image} mr='15px' />
       <Flex direction='column'>
         <Flex>
           <Text color='gray.400' fontWeight={400} fontSize='.8rem'>

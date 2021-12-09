@@ -60,7 +60,7 @@ export default function CreateHarbor(): JSX.Element {
           <ModalCloseButton />
           <ModalBody>
             <Text> A harbor is a place your you and your friends.</Text>
-            {error && <Text color='red.500'>{error.message}</Text>}
+            {error && <Text color='brand.red'>{error.message}</Text>}
             <Input
               mt='4'
               autoFocus

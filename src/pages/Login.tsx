@@ -38,7 +38,7 @@ export default function Login(): JSX.Element {
             <Heading size='lg'>Hello there!</Heading>
           </Flex>
           <Flex justify='center'>
-            <Text color='red.500'>{errorMsg}</Text>
+            <Text color='brand.red'>{errorMsg}</Text>
           </Flex>
           <Input
             mt='4'

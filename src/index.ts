@@ -1,3 +1,5 @@
+import fs from 'fs-extra'
+import mime from 'mime-types'
 import update from 'update-electron-app'
 import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 
@@ -95,7 +97,18 @@ ipcMain.on('selectAvatarFile', event => {
       properties: ['openFile'],
     })
     .then(result => {
-      event.sender.send('selectAvatarFile', { result })
+      const stats = fs.statSync(result.filePaths[0])
+      fs.readFile(result.filePaths[0], { encoding: 'base64' })
+        .then(file => {
+          event.sender.send('selectAvatarFile', {
+            data: file,
+            size: stats.size,
+            type: mime.lookup(result.filePaths[0]),
+          })
+        })
+        .catch(err => {
+          console.error('Unable to read file', err)
+        })
     })
     .catch(error => {
       console.error(error)

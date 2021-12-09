@@ -51,7 +51,7 @@ export default function TitleBar(): JSX.Element {
             variant='ghost'
             aria-label='quit'
             icon={<IoCloseOutline size='20px' />}
-            _hover={{ bg: 'red.500' }}
+            _hover={{ bg: 'brand.red' }}
             onClick={() => titleBarAction('quit')}
           />
         </Flex>

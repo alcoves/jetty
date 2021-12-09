@@ -51,7 +51,7 @@ export default function CreateChannel(): JSX.Element {
           <ModalCloseButton />
           <ModalBody>
             <Text> A channel is a place to send and recieve messages</Text>
-            {error && <Text color='red.500'>{error.message}</Text>}
+            {error && <Text color='brand.red'>{error.message}</Text>}
             <Input
               mt='4'
               type='text'

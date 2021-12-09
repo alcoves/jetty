@@ -8,6 +8,7 @@ interface User {
   iat: number
   exp: number
   email: string
+  image: string
   username: string
 }
 

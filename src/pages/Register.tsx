@@ -40,7 +40,7 @@ export default function Register(): JSX.Element {
             <Heading size='lg'>Create an Account</Heading>
           </Flex>
           <Flex justify='center'>
-            <Text color='red.500'>{errorMsg}</Text>
+            <Text color='brand.red'>{errorMsg}</Text>
           </Flex>
           <Input
             mt='4'

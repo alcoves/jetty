@@ -1,46 +1,36 @@
 import useUser from '../../hooks/useUser'
 import React, { useEffect } from 'react'
-// import { useDropzone } from 'react-dropzone'
-import { Button, Center, Avatar } from '@chakra-ui/react'
+import { Avatar } from '@chakra-ui/react'
+import useLazyRequest from '../../hooks/useLazyRequest'
 
 export default function AvatarUpload(): JSX.Element {
   const { user, loading, authenticated } = useUser()
-
-  // const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-  //   maxFiles: 1,
-  //   multiple: false,
-  //   accept: 'image/png, image/jpeg, image/webp',
-  // })
-
-  // useEffect(() => {
-  //   acceptedFiles.map(file => (
-  //     <li key={file.path}>
-  //       {file.path} - {file.size} bytes
-  //     </li>
-  //   ))
-  // }, [acceptedFiles])
+  const [modifyUser, { data, loading: modifyUserLoading, error }] = useLazyRequest(
+    'http://localhost:4000/users/@me',
+    { method: 'PATCH' }
+  )
 
   useEffect(() => {
-    window['electron'].api.receive('selectAvatarFile', event => {
-      console.log('selectAvatarFile', event)
+    window['electron'].api.receive('selectAvatarFile', file => {
+      console.log('selectAvatarFile', file)
+      // TODO :: use file.size to display en error
+      modifyUser({ image: `data:${file.type};base64,${file.data}` })
+      // TODO :: Re-hydrate the user so that their avatar is updated globally
     })
   }, [])
 
   if (!loading && authenticated) {
     return (
-      <div>
-        <Button
-          onClick={() => {
-            window['electron'].api.send('selectAvatarFile')
-          }}
-        >
-          Click to upload
-        </Button>
-      </div>
-      // <Center cursor='pointer' borderRadius='50%' {...getRootProps()}>
-      //   <input {...getInputProps()} />
-      //   <Avatar size='lg' name={user.username} />
-      // </Center>
+      <Avatar
+        size='lg'
+        src={user.image}
+        cursor='pointer'
+        name={user.username}
+        _hover={{ opacity: '.9' }}
+        onClick={() => {
+          window['electron'].api.send('selectAvatarFile')
+        }}
+      />
     )
   }
 

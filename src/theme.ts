@@ -10,6 +10,9 @@ const theme = extendTheme({
     heading: 'OpenSans',
   },
   colors: {
+    brand: {
+      red: '#bf1e2e',
+    },
     gray: {
       50: '#F7FAFC',
       100: '#EDF2F7',
