@@ -1,3 +1,5 @@
+import useUser from '../../hooks/useUser'
+import useLazyRequest from '../../hooks/useLazyRequest'
 import {
   Box,
   Button,
@@ -13,16 +15,18 @@ import {
   Input,
   IconButton,
 } from '@chakra-ui/react'
-import useUser from '../../hooks/useUser'
-import React, { useEffect, useState } from 'react'
-import { IoAdd, IoAddOutline, IoAddSharp } from 'react-icons/io5'
+import { IoAddSharp } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 
 export default function CreateHarbor(): JSX.Element {
   const navigate = useNavigate()
-  const { user, authenticated } = useUser()
   const [name, setName] = useState('')
+  const { user, authenticated } = useUser()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [createHarbor, { data, loading, error }] = useLazyRequest('http://localhost:4000/harbors', {
+    method: 'POST',
+  })
 
   useEffect(() => {
     if (authenticated) {
@@ -32,13 +36,12 @@ export default function CreateHarbor(): JSX.Element {
     }
   }, [authenticated])
 
-  // useEffect(() => {
-  //   if (data) {
-  //     onClose()
-  //     refetch()
-  //     // navigate(`/harbors/${data.createHarbor.id}`)
-  //   }
-  // }, [data])
+  useEffect(() => {
+    if (data) {
+      onClose()
+      navigate(`/harbors/${data?.payload?.harbor?.id}`)
+    }
+  }, [data])
 
   return (
     <Box>
@@ -56,8 +59,8 @@ export default function CreateHarbor(): JSX.Element {
           <ModalHeader>Create a harbor</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text> A harbor a place your you and your friends.</Text>
-            {/* {error && <Text color='red.500'>{error.message}</Text>} */}
+            <Text> A harbor is a place your you and your friends.</Text>
+            {error && <Text color='red.500'>{error.message}</Text>}
             <Input
               mt='4'
               autoFocus
@@ -71,10 +74,10 @@ export default function CreateHarbor(): JSX.Element {
             <Button
               w='100%'
               variant='solid'
-              // isLoading={loading}
-              // onClick={() => {
-              //   mutateFunction({ variables: { input: { name } } })
-              // }}
+              isLoading={loading}
+              onClick={() => {
+                createHarbor({ name })
+              }}
             >
               Create
             </Button>
