@@ -1,20 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useMutation } from '@apollo/client'
+import useLazyRequest from '../../hooks/useLazyRequest'
+import { useParams } from 'react-router-dom'
 import { Box, Input } from '@chakra-ui/react'
-import { CREATE_MESSAGE } from '../../graphql/schema'
+import React, { useRef, useState } from 'react'
 
-export default function SendMessage({ channelId }: { channelId: string }) {
+export default function SendMessage() {
   const inputRef = useRef(null)
   const [content, setContent] = useState('')
-  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_MESSAGE)
+  const { harborId, channelId } = useParams()
+  const [sendMessage, { data, loading, error }] = useLazyRequest()
 
   async function submitMessage() {
-    await mutateFunction({
-      variables: {
-        input: {
-          content: content,
-          channel: channelId,
-        },
+    await sendMessage({
+      url: `http://localhost:4000/harbors/${harborId}/channels/${channelId}/messages`,
+      method: 'post',
+      data: {
+        content: content,
+        channel: channelId,
       },
     })
     setContent('')

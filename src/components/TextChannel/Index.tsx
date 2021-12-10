@@ -1,81 +1,82 @@
 import SendMessage from './SendMessage'
 import ChatMessage from '../ChatMessage'
-import { Flex } from '@chakra-ui/react'
-import React, { useContext, useEffect, useState } from 'react'
-import useSWR from 'swr'
+import axios from 'axios'
+import useLazyRequest from '../../hooks/useLazyRequest'
+import { Box, Button, Flex } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import { fetcher } from '../../config/fetcher'
 import { SocketContext } from '../../contexts/socket'
+import React, { useContext, useEffect, useState } from 'react'
 
 export default function TextChannel({ id }: { id: string }) {
   const socket = useContext(SocketContext)
+  const { harborId, channelId } = useParams()
+  const [wsMessages, setWsMessages] = useState([])
+  const [extraMessages, setExtraMessages] = useState([])
+  const [getMessages, { data, error, loading }] = useLazyRequest()
 
   useEffect(() => {
-    socket.on('heartbeat', () => {
-      console.log('heartbeat recieved')
+    socket.on('message', message => {
+      setWsMessages(prev => [message, ...prev])
+      console.log('message recieved', message)
     })
-
-    // return () => {
-    //   socket.disconnect()
-    // }
   }, [])
 
-  const { harborId, channelId } = useParams()
-  const getMessagesUrl = `http://localhost:4000/harbors/${harborId}/channels/${channelId}/messages`
-  const { data, error } = useSWR(getMessagesUrl, fetcher)
+  useEffect(() => {
+    if (!data && !error && !loading) {
+      getMessages({
+        url: `http://localhost:4000/harbors/${harborId}/channels/${channelId}/messages`,
+      })
+    }
+  }, [data, loading, error])
 
-  // const [wsMessages, setWsMessages] = useState([])
+  // async function handleScroll(e) {
+  //   const height = e.target.scrollHeight - e.target.clientHeight
+  //   const offset = e.target.scrollTop * -1
 
-  // const {}
-
-  // const { fetchMore, data, error, loading } = useQuery(GET_CHANNEL_MESSAGES, {
-  //   notifyOnNetworkStatusChange: true,
-  //   variables: { input: { channelId: id } },
-  // })
-
-  // const { data: data2, loading: loading2 } = useSubscription(CHANNEL_MESSAGES_SUBSCRIPTION, {
-  //   variables: { channelId: id },
-  // })
-
-  // useEffect(() => {
-  //   console.log('on wss')
-  //   if (data2) {
-  //     setWsMessages(prevState => [...data2.channelMessages, ...prevState])
+  //   if (height - offset <= 1) {
+  //     handleLoadMore()
   //   }
-  // }, [data2, loading2])
+  // }
 
-  function handleScroll(e) {
-    const height = e.target.scrollHeight - e.target.clientHeight
-    const offset = e.target.scrollTop * -1
+  async function handleLoadMore() {
+    let before = ''
+    if (extraMessages.length) {
+      before = extraMessages[extraMessages.length - 1].id
+    } else if (data?.payload?.messages.length) {
+      before = data?.payload?.messages[data?.payload?.messages.length - 1].id
+    }
 
-    if (height - offset <= 1) {
-      // @ts-ignore
-      // const fiterDate = data.getChannelMessages[data.getChannelMessages.length - 1].createdAt
-      // console.log('top of page reached', data?.getChannelMessages?.length, parseInt(fiterDate))
-      // if (!loading && !error) {
-      // fetchMore({
-      //   variables: {
-      //     input: {
-      //       channelId: id,
-      //       before: parseInt(fiterDate),
-      //     },
-      //   },
-      // })
-      // }
+    if (before) {
+      const res = await axios.get(
+        `http://localhost:4000/harbors/${harborId}/channels/${channelId}/messages?before=${before}`
+      )
+      const extraMessagesRes = res?.data?.payload?.messages || []
+      setExtraMessages(prev => [...prev, ...extraMessagesRes])
     }
   }
 
   return (
     <Flex overflowY='auto' direction='column' justify='end' w='100%' h='100%'>
-      <Flex onScroll={handleScroll} overflowY='auto' direction='column-reverse' w='100%'>
-        {/* {wsMessages?.map(message => {
+      <Flex overflowY='auto' direction='column-reverse' w='100%'>
+        {/* onScroll={handleScroll} */}
+        {wsMessages?.map(message => {
           return <ChatMessage key={message.id} message={message} />
-        })} */}
+        })}
         {data?.payload?.messages?.map(message => {
           return <ChatMessage key={message.id} message={message} />
         })}
+        {extraMessages?.map(message => {
+          return <ChatMessage key={message.id} message={message} />
+        })}
+        {!loading && (
+          <Flex p='4' w='100%' justify='center'>
+            <Button onClick={handleLoadMore} w='auto' size='sm'>
+              Load More
+            </Button>
+          </Flex>
+        )}
       </Flex>
-      <SendMessage channelId={id} />
+      <SendMessage />
     </Flex>
   )
 }

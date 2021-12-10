@@ -24,8 +24,9 @@ export default function CreateHarbor(): JSX.Element {
   const [name, setName] = useState('')
   const { user, authenticated } = useUser()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [createHarbor, { data, loading, error }] = useLazyRequest('http://localhost:4000/harbors', {
+  const [createHarbor, { data, loading, error }] = useLazyRequest({
     method: 'POST',
+    url: 'http://localhost:4000/harbors',
   })
 
   useEffect(() => {

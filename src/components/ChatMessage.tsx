@@ -12,7 +12,7 @@ export default function ChatMessage({ message }: { message: any }) {
           </Text>
         </Flex>
         <Text fontWeight={500} fontSize='.9rem'>
-          {message.content}
+          {message.id} - {message.content}
         </Text>
       </Flex>
     </Flex>

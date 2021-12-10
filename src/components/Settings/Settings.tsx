@@ -37,7 +37,7 @@ export default function Settings() {
   return (
     <>
       <Avatar onClick={onOpen} cursor='pointer' size='sm' name={user.username} src={user.image} />
-      <Modal size='full' isOpen={!isOpen} onClose={onClose}>
+      <Modal size='full' isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Settings</ModalHeader>

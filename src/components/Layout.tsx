@@ -12,6 +12,10 @@ export default function Layout(): JSX.Element {
 
   useEffect(() => {
     socket.emit('join', Cookies.get('token'))
+
+    return () => {
+      socket.disconnect()
+    }
   }, [])
 
   return (

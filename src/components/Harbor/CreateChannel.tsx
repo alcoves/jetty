@@ -22,10 +22,10 @@ export default function CreateChannel(): JSX.Element {
   const { harborId } = useParams()
   const [name, setName] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [createChannel, { data, loading, error }] = useLazyRequest(
-    `${apiUrl}/harbors/${harborId}/channels`,
-    { method: 'post' }
-  )
+  const [createChannel, { data, loading, error }] = useLazyRequest({
+    method: 'post',
+    url: `${apiUrl}/harbors/${harborId}/channels`,
+  })
 
   useEffect(() => {
     if (data) onClose()

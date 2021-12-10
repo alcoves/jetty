@@ -5,10 +5,10 @@ import useLazyRequest from '../../hooks/useLazyRequest'
 
 export default function AvatarUpload(): JSX.Element {
   const { user, loading, authenticated } = useUser()
-  const [modifyUser, { data, loading: modifyUserLoading, error }] = useLazyRequest(
-    'http://localhost:4000/users/@me',
-    { method: 'PATCH' }
-  )
+  const [modifyUser, { data, loading: modifyUserLoading, error }] = useLazyRequest({
+    method: 'PATCH',
+    url: 'http://localhost:4000/users/@me',
+  })
 
   useEffect(() => {
     window['electron'].api.receive('selectAvatarFile', file => {
