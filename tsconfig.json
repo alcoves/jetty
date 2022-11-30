@@ -1,23 +1,27 @@
 {
   "compilerOptions": {
-    "allowJs": false,
-    "module": "commonjs",
-    "skipLibCheck": true,
+    "target": "es2021",
     "esModuleInterop": true,
-    "noImplicitAny": false,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "outDir": "dist",
-    "jsx": "react",
+    "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    }
+    "isolatedModules": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "noImplicitAny": false,
+    "typeRoots": [
+      "@types",
+      "node_modules/@types"
+    ],
   },
   "include": [
-    "src/**/*"
-  ]
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+  ],
 }
